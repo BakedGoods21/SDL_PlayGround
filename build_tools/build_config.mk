@@ -7,13 +7,13 @@ build_all : build
 
 build : $(DST_OBJS)
 #	@mkdir -p $(^D)
-	$(CPP) $^ $(LIB_PATHS) $(LIB_FLAGS) $(CXX_EXE_NAME_FLAG) $(OBJ_LOC_NAME)
+	@$(CPP) $^ $(LIB_PATHS) $(LIB_FLAGS) $(CXX_EXE_NAME_FLAG) $(OBJ_LOC_NAME)
 	$(info Build Successful)
 
 $(DST_DIR)/%$(CXX_OBJ_SUFFIX): $(SRC_DIR)/%.cpp
-	$(info Compiling $^)
-	mkdir -p $(@D)
-	$(CPP) $(CXXFLAGS) $(LIB_INCLUDES) -c $< $(CXX_OBJ_NAME_FLAG) $@
+	@mkdir -p $(@D)
+	@$(CPP) $(CXXFLAGS) $(LIB_INCLUDES) -c $< $(CXX_OBJ_NAME_FLAG) $@
+	$(info Compiled $^)
 
 # copy_library_files : $(BAKED_LIB_DIR) $(BAKED_INCLUDE_DIR)
 # 	@mkdir -p $(INCLUDE_DIR)
