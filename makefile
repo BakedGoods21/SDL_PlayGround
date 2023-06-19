@@ -24,6 +24,7 @@ else
 include $(BUILD_TOOLS_DIR)/linux_config.mk
 endif
 
+include $(BUILD_TOOLS_DIR)/vars_config.mk
 include $(BUILD_TOOLS_DIR)/build_config.mk
 
 
