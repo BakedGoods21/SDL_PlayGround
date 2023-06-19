@@ -10,8 +10,8 @@ CXXFLAGS := -std=c++20 -Wall -Werror -Wextra -Wconversion -Wunused \
 			--param=ssp-buffer-size=4 -m$(BITS)
 # -Wl,-subsystem,windows # Need for later
 # -Wold-style-cast -Wshadow
-CXX_COMP_FLAG := -c
-CXX_NAME_FLAG := -o
+CXX_OBJ_NAME_FLAG := -o:
+CXX_EXE_NAME_FLAG := $(CXX_OBJ_NAME_FLAG)
 CXX_OBJ_SUFFIX := .o
 
 # Set Release mode specific compiler flags
