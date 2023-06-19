@@ -73,18 +73,18 @@ LIB_DIR_NAME := $(LIB_DIR)/lib$(OBJ_NAME)
 SRC_FILES := $(shell find $(SRC_DIR)/ -name '*.cpp')
 DST_OBJS := $(SRC_FILES:$(SRC_DIR)/%.cpp=$(DST_DIR)/%$(CXX_OBJ_SUFFIX))
 
-LIB_PATHS := #-L$(SDL_PATH)/lib \
-# 			 -L$(SDL2_MIXER_PATH)/bin \
-# 			 -L$(SDL2_MIXER_PATH)/lib \
-# 			 -L$(GLEW_PATH)/lib
+LIB_PATHS := #-L$(SDL_PATH)/lib/x64 \
+			#  -L$(SDL2_MIXER_PATH)/lib/x64 \
+			#  -L$(GLEW_PATH)/lib/Release/x64
 
-LIB_FLAGS := #/link \
-			 #$(SDL_PATH)/SDL2.dll \
-			 #$(SDL2_MIXER_PATH)/SDL2_mixer.dll \
-			 #$(GLEW_PATH)/bin/Release/x64/glew32.dll
+LIB_FLAGS := $(SDL_PATH)/lib/x64/SDL2.lib \
+			 $(SDL2_MIXER_PATH)/lib/x64/SDL2_mixer.lib \
+			 $(GLEW_PATH)/lib/Release/x64/glew32.lib
 
-LIB_INCLUDES := -I$(GLEW_PATH)/include \
-				-I$(GLM_PATH) \
+LIB_INCLUDES := -I$(SDL_PATH)/include \
+			    -I$(SDL2_MIXER_PATH)/include \
+                -I$(GLEW_PATH)/include \
+               	-I$(GLM_PATH) \
 				-I$(SRC_DIR)
 
 

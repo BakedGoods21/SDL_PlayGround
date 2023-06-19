@@ -62,7 +62,6 @@ SRC_FILES := $(shell find $(SRC_DIR)/ -name '*.cpp')
 DST_OBJS := $(SRC_FILES:$(SRC_DIR)/%.cpp=$(DST_DIR)/%.o)
 
 LIB_PATHS := -L$(SDL_PATH)/lib \
-			 -L$(SDL2_MIXER_PATH)/bin \
 			 -L$(SDL2_MIXER_PATH)/lib \
 			 -L$(GLEW_PATH)/lib
 
