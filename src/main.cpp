@@ -1,12 +1,14 @@
 #include <windows.h>
-#include <iostream>
+
+// SDL Libraries
+#include <SDL.h>
 
 int CALLBACK WinMain(HINSTANCE hInstance,
 					 HINSTANCE hPrevInstance,
 					 LPSTR lpCmdLine,
 					 int nCmdShow)
 {
-	std::cerr << "Hello World" << std::endl;
+	SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_WARNING, "Test" , "This is a test Window using SDL2", nullptr);
 
 	return 0;
 }

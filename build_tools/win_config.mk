@@ -61,3 +61,7 @@ LIB_PATHS := #-L$(SDL_PATH)/lib/x64 \
 LIB_FLAGS := $(SDL_PATH)/lib/x64/SDL2.lib \
 			 $(SDL2_MIXER_PATH)/lib/x64/SDL2_mixer.lib \
 			 $(GLEW_PATH)/lib/Release/x64/glew32.lib
+
+LIBRARY_DEPENDENCIES := $(SDL_PATH)/lib/x64/SDL2.dll \
+						$(GLEW_PATH)/bin/Release/x64/glew32.dll \
+						$(SDL2_MIXER_PATH)/lib/x64/SDL2_mixer.dll

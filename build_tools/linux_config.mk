@@ -47,3 +47,7 @@ LIB_PATHS := -L$(SDL_PATH)/lib \
 			 -L$(GLEW_PATH)/lib
 
 LIB_FLAGS := -lmingw32 -lSDL2main -lSDL2 -lSDL2_mixer -lopengl32 -lglew32
+
+LIBRARY_DEPENDENCIES := $(SDL_PATH)/bin/SDL2.dll
+						$(GLEW_PATH)/lib/glew32.dll
+						$(SDL2_MIXER_PATH)/lib/libSDL2_mixer.dll

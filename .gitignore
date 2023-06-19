@@ -2,3 +2,7 @@
 *.o*
 *.pdb
 build/*
+.vscode
+*.dll
+*.so
+*.a

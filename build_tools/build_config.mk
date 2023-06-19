@@ -2,7 +2,7 @@
 # Project Recipes
 # =======================================================
 
-build_all : build
+build_all : build copy_library_files
 	$(info Build All Successful)
 
 build : $(DST_OBJS)
@@ -15,12 +15,9 @@ $(DST_DIR)/%$(CXX_OBJ_SUFFIX): $(SRC_DIR)/%.cpp
 	@$(CPP) $(CXXFLAGS) $(LIB_INCLUDES) -c $< $(CXX_OBJ_NAME_FLAG) $@
 	$(info Compiled $^)
 
-# copy_library_files : $(BAKED_LIB_DIR) $(BAKED_INCLUDE_DIR)
-# 	@mkdir -p $(INCLUDE_DIR)
-# 	@mkdir -p $(DIR)
-# 	@cp $(BAKED_LIB_DIR)/*.dll  $(DIR)/
-# 	@cp -r $(BAKED_INCLUDE_DIR)/* $(INCLUDE_DIR)/
-# 	@cp $(LIBRARY_DEPENDENCIES) $(DIR)/
+copy_library_files : $(BAKED_LIB_DIR) $(BAKED_INCLUDE_DIR)
+	@cp $(LIBRARY_DEPENDENCIES) $(TOP_PATH)
+	$(info Copied Dependencies Successfully)
 
 
 # # =======================================================
@@ -41,7 +38,7 @@ $(DST_DIR)/%$(CXX_OBJ_SUFFIX): $(SRC_DIR)/%.cpp
 # Project Clean Recipes
 # =======================================================
 
-build_clean: build_clean-exe build_clean-build build_clean_test # build_clean-lib build_clean-include
+build_clean: build_clean-exe build_clean-build build_clean_test build_clean-lib# build_clean-include
 	$(info Build Clean Successful)
 
 build_clean-exe:
@@ -50,8 +47,8 @@ build_clean-exe:
 build_clean-build:
 	rm -rf $(DST_DIR)
 
-# build_clean-lib:
-# 	rm -rf $(DIR)/*.so $(DIR)/*.a $(DIR)/*.dll
+build_clean-lib:
+	rm -rf $(TOP_PATH)/*.so $(TOP_PATH)/*.a $(TOP_PATH)/*.dll $(TOP_PATH)/*.pdb
 
 # build_clean-include:
 # 	rm -rf $(INCLUDE_DIR)
