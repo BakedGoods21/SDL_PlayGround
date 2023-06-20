@@ -1,7 +1,8 @@
+// Windows Libraries
 #include <windows.h>
 
-// SDL Libraries
-#include <SDL.h>
+// Main Game Libraries
+#include "Game/MainGame.h"
 
 #ifdef WINDOWS
 int CALLBACK WinMain(HINSTANCE hInstance,
@@ -20,8 +21,9 @@ int main()
 {
 #endif
 
+	MainGame mainGame;
 
-	SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_WARNING, "Test" , "This is a test Window using SDL2", nullptr);
+	mainGame.run();
 
 	return 0;
 }

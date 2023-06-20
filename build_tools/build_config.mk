@@ -2,7 +2,7 @@
 # Project Recipes
 # =======================================================
 
-build_all : build copy_library_files
+build_all : copy_library_files build
 	$(info Build All Successful)
 
 build : $(DST_OBJS)

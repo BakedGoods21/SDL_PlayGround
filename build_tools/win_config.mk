@@ -29,9 +29,9 @@ BUILD_TOOL := WINDOWS
 
 # Sets the Library Path location
 ifeq ($(BUILD_TOOL),WINDOWS)
-LIB_PATH := C:/Users/warre/Libraries/windows
+LIB_PATH := C:/Users/Warren/Libraries/windows
 else ifeq ($(BUILD_TOOL),MINGW64)
-LIB_PATH := C:/Users/warre/Libraries/mingww64
+LIB_PATH := C:/Users/Warren/Libraries/mingww64
 else
 $(info "Incorrect BUILD_TOOL set, use WINDOWS or MINGW64")
 exit
@@ -60,7 +60,8 @@ LIB_PATHS := #-L$(SDL_PATH)/lib/x64 \
 
 LIB_FLAGS := $(SDL_PATH)/lib/x64/SDL2.lib \
 			 $(SDL2_MIXER_PATH)/lib/x64/SDL2_mixer.lib \
-			 $(GLEW_PATH)/lib/Release/x64/glew32.lib
+			 $(GLEW_PATH)/lib/Release/x64/glew32.lib \
+			 OpenGL32.lib
 
 LIBRARY_DEPENDENCIES := $(SDL_PATH)/lib/x64/SDL2.dll \
 						$(GLEW_PATH)/bin/Release/x64/glew32.dll \
