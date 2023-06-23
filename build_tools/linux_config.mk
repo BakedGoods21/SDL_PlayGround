@@ -2,7 +2,7 @@
 # C++ Variables
 # =======================================================
 
-CPP := g++
+CXX := g++
 AR := ar
 CXXFLAGS := -std=c++20 -Wall -Werror -Wextra -Wconversion -Wunused \
    	        -Wpointer-arith -Wcast-qual -Wno-missing-braces -Wcast-align \

@@ -3,7 +3,7 @@
 # =======================================================
 
 # C++ Variables
-CPP := /c/Program\\ Files\\ \\(x86\\)/Microsoft\\ Visual\\ Studio/2022/BuildTools/VC/Tools/MSVC/14.36.32532/bin/HostX64/x64/cl
+CXX := /c/Program\\ Files\\ \\(x86\\)/Microsoft\\ Visual\\ Studio/2022/BuildTools/VC/Tools/MSVC/14.36.32532/bin/HostX64/x64/cl
 AR :=
 CXXFLAGS := -std:c++20 -W4 -WX -sdl -options:strict -DWINDOWS
 

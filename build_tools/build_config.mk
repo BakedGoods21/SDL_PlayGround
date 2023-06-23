@@ -7,12 +7,12 @@ build_all : copy_library_files build
 
 build : $(DST_OBJS)
 #	@mkdir -p $(^D)
-	@$(CPP) $^ $(LIB_PATHS) $(LIB_FLAGS) $(CXX_EXE_NAME_FLAG) $(OBJ_LOC_NAME)
+	@$(CXX) $^ $(LIB_PATHS) $(LIB_FLAGS) $(CXX_EXE_NAME_FLAG) $(OBJ_LOC_NAME)
 	$(info Build Successful)
 
 $(DST_DIR)/%$(CXX_OBJ_SUFFIX): $(SRC_DIR)/%.cpp
 	@mkdir -p $(@D)
-	$(CPP) $(LIB_INCLUDES) $(CXXFLAGS) -c $< $(CXX_OBJ_NAME_FLAG) $@
+	$(CXX) $(LIB_INCLUDES) $(CXXFLAGS) -c $< $(CXX_OBJ_NAME_FLAG) $@
 	$(info Compiled $^)
 
 copy_library_files : $(BAKED_LIB_DIR) $(BAKED_INCLUDE_DIR)
@@ -26,12 +26,12 @@ copy_library_files : $(BAKED_LIB_DIR) $(BAKED_INCLUDE_DIR)
 
 # $(TEST_BUILD_DIR)/%.test: $(TEST_BUILD_DIR)/%$(CXX_OBJ_SUFFIX)
 # 	@mkdir -p $(@D)
-# 	@$(CPP) $(CXXFLAGS) $^ $(SRC_OBJS_TEST) $(LIBS) $(LIB_FLAGS) -o $@
+# 	@$(CXX) $(CXXFLAGS) $^ $(SRC_OBJS_TEST) $(LIBS) $(LIB_FLAGS) -o $@
 
 # $(TEST_BUILD_DIR)/%$(CXX_OBJ_SUFFIX): $(TEST_SRC_DIR)/%.cpp
 # 	@echo Compiling Test $^
 # 	@mkdir -p $(@D)
-# 	@$(CPP) $(CXXFLAGS) $(TEST_INCLUDE_PATHS) $(CXX_COMP_FLAG) $< $(CXX_NAME_FLAG) $@
+# 	@$(CXX) $(CXXFLAGS) $(TEST_INCLUDE_PATHS) $(CXX_COMP_FLAG) $< $(CXX_NAME_FLAG) $@
 
 
 # =======================================================

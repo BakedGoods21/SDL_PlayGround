@@ -1,5 +1,10 @@
 #pragma once
 
+
+namespace BakedEngine
+{
+
+
 class SpriteBatch
 {
 public:
@@ -10,3 +15,5 @@ public:
 private:
 
 };
+
+} // End of namespace BakedEngine

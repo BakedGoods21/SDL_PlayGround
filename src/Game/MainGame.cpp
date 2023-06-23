@@ -4,7 +4,7 @@
 // BakedEngine Libraries
 #include "BakedEngine/BakedEngine.h"
 #include "BakedEngine/SdlError.h"
-#include "BakedEngine/Vertex.h"
+#include "BakedEngine/Glyph.h"
 
 // Game Libraries
 #include "Game/MainGame.h"
@@ -15,6 +15,8 @@ MainGame::MainGame()
 	{
 		BakedEngine::CustomSdlError::DisplayError(SDL_MessageBoxFlags::SDL_MESSAGEBOX_ERROR, "Main Game Init", "Could not initialize SDL", nullptr);
 	}
+
+	BakedEngine::Glyph test;
 
 	gameWindow.create("Test Window", 480, 480, 0);
 }
