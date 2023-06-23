@@ -12,7 +12,7 @@ build : $(DST_OBJS)
 
 $(DST_DIR)/%$(CXX_OBJ_SUFFIX): $(SRC_DIR)/%.cpp
 	@mkdir -p $(@D)
-	@$(CPP) $(LIB_INCLUDES) $(CXXFLAGS) -c $< $(CXX_OBJ_NAME_FLAG) $@
+	$(CPP) $(LIB_INCLUDES) $(CXXFLAGS) -c $< $(CXX_OBJ_NAME_FLAG) $@
 	$(info Compiled $^)
 
 copy_library_files : $(BAKED_LIB_DIR) $(BAKED_INCLUDE_DIR)

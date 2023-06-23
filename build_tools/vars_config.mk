@@ -17,10 +17,10 @@ LIB_DIR_NAME := $(LIB_DIR)/lib$(OBJ_NAME)
 SRC_FILES := $(shell find $(SRC_DIR)/ -name '*.cpp')
 DST_OBJS := $(SRC_FILES:$(SRC_DIR)/%.cpp=$(DST_DIR)/%$(CXX_OBJ_SUFFIX))
 
-LIB_INCLUDES := -I$(SDL_PATH)/include \
-			    -I$(SDL2_MIXER_PATH)/include \
-                -I$(GLEW_PATH)/include \
-               	-I$(GLM_PATH) \
+LIB_INCLUDES := -I$(SDL_INCLUDE_PATH) \
+			    -I$(SDL2_INCLUDE_MIXER_PATH) \
+                -I$(GLEW_INCLUDE_PATH) \
+               	-I$(GLM_INCLUDE_PATH) \
 				-I$(SRC_DIR)
 
 

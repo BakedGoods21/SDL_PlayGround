@@ -10,7 +10,7 @@ CXXFLAGS := -std=c++20 -Wall -Werror -Wextra -Wconversion -Wunused \
 			--param=ssp-buffer-size=4 -m$(BITS) -DLINUX
 # -Wl,-subsystem,windows # Need for later
 # -Wold-style-cast -Wshadow
-CXX_OBJ_NAME_FLAG := -o:
+CXX_OBJ_NAME_FLAG := -o
 CXX_EXE_NAME_FLAG := $(CXX_OBJ_NAME_FLAG)
 CXX_OBJ_SUFFIX := .o
 CXX_EXE_SUFFIX :=
@@ -28,19 +28,28 @@ endif
 # =======================================================
 
 # Sets the Library Path location
-LIB_PATH := C:/Users/warre/Libraries/mingww64
+ifeq ($(OS),Windows_NT)
+LIB_PATH := $(3RD_PARTY_LIB_DIR)/mingww64
+PATH := $(LIB_PATH)/mingw64/bin:$(PATH)
+else
+LIB_PATH :=
+endif
 
 SDL_VERSION := SDL2-2.26.5
 SDL_PATH := $(LIB_PATH)/$(SDL_VERSION)/x86_64-w64-mingw32
+SDL_INCLUDE_PATH := $(SDL_PATH)/include/SDL2
 
 GLEW_VERSION := glew-2.1.0
 GLEW_PATH := $(LIB_PATH)/$(GLEW_VERSION)
+GLEW_INCLUDE_PATH := $(GLEW_PATH)/include
 
 GLM_VERSION := glm-0.9.9.8
 GLM_PATH := $(LIB_PATH)/$(GLM_VERSION)
+GLM_INCLUDE_PATH := $(GLM_PATH)
 
 SDL_MIXER_VERSION := SDL2_mixer-2.6.3
 SDL2_MIXER_PATH := $(LIB_PATH)/$(SDL_MIXER_VERSION)/x86_64-w64-mingw32
+SDL2_INCLUDE_MIXER_PATH := $(SDL2_MIXER_PATH)/include/SDL2
 
 LIB_PATHS := -L$(SDL_PATH)/lib \
 			 -L$(SDL2_MIXER_PATH)/lib \
@@ -48,6 +57,6 @@ LIB_PATHS := -L$(SDL_PATH)/lib \
 
 LIB_FLAGS := -lmingw32 -lSDL2main -lSDL2 -lSDL2_mixer -lopengl32 -lglew32
 
-LIBRARY_DEPENDENCIES := $(SDL_PATH)/bin/SDL2.dll
-						$(GLEW_PATH)/lib/glew32.dll
-						$(SDL2_MIXER_PATH)/lib/libSDL2_mixer.dll
+LIBRARY_DEPENDENCIES := $(SDL_PATH)/bin/SDL2.dll \
+						$(GLEW_PATH)/lib/glew32.dll \
+						$(SDL2_MIXER_PATH)/bin/SDL2_mixer.dll

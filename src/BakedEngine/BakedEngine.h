@@ -1,5 +1,9 @@
 #pragma once
 
+// C++ Includes
+#include <array>
+
+// SDL Includes
 #include <SDL.h>
 
 namespace BakedEngine

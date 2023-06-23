@@ -1,6 +1,9 @@
 // Windows Libraries
 #include <windows.h>
 
+// BakedEngine Libraries
+#include "BakedEngine/SdlError.h"
+
 // Main Game Libraries
 #include "Game/MainGame.h"
 
@@ -17,8 +20,13 @@ int CALLBACK WinMain(HINSTANCE hInstance,
 #endif
 
 #ifdef LINUX
-int main()
+int main(int argc, char** argv)
 {
+	if (argc != 1)
+	{
+		BakedEngine::CustomSdlError::DisplayError(SDL_MessageBoxFlags::SDL_MESSAGEBOX_ERROR, "Main Error", std::to_string(argc) + " invalid args: " + argv[0], nullptr);
+		return -1;
+	}
 #endif
 
 	MainGame mainGame;

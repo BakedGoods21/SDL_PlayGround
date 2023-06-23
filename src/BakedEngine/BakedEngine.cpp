@@ -1,8 +1,10 @@
 // GL Libraries
 #include <GL/glew.h>
+#include <cmath>
 
 // BakedEngine Libraries
 #include "BakedEngine/BakedEngine.h"
+#include "BakedEngine/FastTrig.h"
 
 namespace BakedEngine
 {
@@ -35,6 +37,8 @@ bool init(uint32_t subSystemFlags/* = SDL_INIT_EVERYTHING*/)
 	SDL_GL_SetAttribute( SDL_GL_CONTEXT_MINOR_VERSION, _glMinorVersion );
 	SDL_GL_SetAttribute( SDL_GL_CONTEXT_PROFILE_MASK, _contextProfile );
 	SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, _isDoubleBufferEnabled );
+
+	initializeBakedTrig();
 
 	return true;
 }

@@ -4,11 +4,11 @@
             "name": "Win32",
             "includePath": [
                 "${workspaceFolder}/src/**",
-                "C:/Users/Warren/Libraries/windows/SDL2-2.26.5/include",
-                "C:/Users/Warren/Libraries/windows/glew-2.2.0/include",
-                "C:/Users/Warren/Libraries/windows/glm-0.9.9.8",
-                "C:/Users/Warren/Libraries/windows/SDL2_mixer-2.6.3/include",
-                "C:/Users/Warren/Libraries/windows/boost_1_81_0"
+                "C:/Users/warre/Libraries/windows/SDL2-2.26.5/include",
+                "C:/Users/warre/Libraries/windows/glew-2.2.0/include",
+                "C:/Users/warre/Libraries/windows/glm-0.9.9.8",
+                "C:/Users/warre/Libraries/windows/SDL2_mixer-2.6.3/include",
+                "C:/Users/warre/Libraries/windows/boost_1_81_0"
 
             ],
             "defines": [

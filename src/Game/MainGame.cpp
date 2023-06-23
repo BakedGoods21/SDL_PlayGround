@@ -4,6 +4,7 @@
 // BakedEngine Libraries
 #include "BakedEngine/BakedEngine.h"
 #include "BakedEngine/SdlError.h"
+#include "BakedEngine/Vertex.h"
 
 // Game Libraries
 #include "Game/MainGame.h"

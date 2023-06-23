@@ -23,19 +23,8 @@ CXX_EXE_SUFFIX := .exe
 # Build Tool Variables
 # =======================================================
 
-# Set BUILD_TOOL according to which system to use while building
-BUILD_TOOL := WINDOWS
-# BUILD_TOOL := MINGW64 # Other option
-
 # Sets the Library Path location
-ifeq ($(BUILD_TOOL),WINDOWS)
-LIB_PATH := C:/Users/Warren/Libraries/windows
-else ifeq ($(BUILD_TOOL),MINGW64)
-LIB_PATH := C:/Users/Warren/Libraries/mingww64
-else
-$(info "Incorrect BUILD_TOOL set, use WINDOWS or MINGW64")
-exit
-endif
+LIB_PATH :=$(3RD_PARTY_LIB_DIR)/windows
 
 
 # =======================================================
@@ -44,15 +33,19 @@ endif
 
 SDL_VERSION := SDL2-2.26.5
 SDL_PATH := $(LIB_PATH)/$(SDL_VERSION)
+SDL_INCLUDE_PATH := $(SDL_PATH)/include
 
 GLEW_VERSION := glew-2.2.0
 GLEW_PATH := $(LIB_PATH)/$(GLEW_VERSION)
+GLEW_INCLUDE_PATH := $(GLEW_PATH)/include
 
 GLM_VERSION := glm-0.9.9.8
 GLM_PATH := $(LIB_PATH)/$(GLM_VERSION)
+GLM_INCLUDE_PATH := $(GLM_PATH)
 
 SDL_MIXER_VERSION := SDL2_mixer-2.6.3
 SDL2_MIXER_PATH := $(LIB_PATH)/$(SDL_MIXER_VERSION)
+SDL2_INCLUDE_MIXER_PATH := $(SDL2_MIXER_PATH)/include
 
 LIB_PATHS := #-L$(SDL_PATH)/lib/x64 \
 			#  -L$(SDL2_MIXER_PATH)/lib/x64 \

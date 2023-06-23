@@ -35,7 +35,7 @@ bool Window::create(std::string windowName, int screenWidth, int screenHeight, u
 	}
 
 	// Check the OpenGl Version
-	CustomSdlError::DisplayError(SDL_MessageBoxFlags::SDL_MESSAGEBOX_INFORMATION, "Open GL" ,  "OpenGl Version: " + std::string((char*)glGetString(GL_VERSION)));
+	CustomSdlError::DisplayError(SDL_MessageBoxFlags::SDL_MESSAGEBOX_INFORMATION, "Open GL" ,  "OpenGl Version: " + std::string((const char*)glGetString(GL_VERSION)));
 
 	// Set VSYNC
 	SDL_GL_SetSwapInterval(0);

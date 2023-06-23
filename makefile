@@ -4,6 +4,7 @@
 
 # Sets the root git repo absolute path
 TOP_PATH := $(shell git rev-parse --show-toplevel)
+3RD_PARTY_LIB_DIR := C:/Users/warre/Libraries
 
 # Set bit (Compile 32 or 64 bit binaries)
 ifeq ($(BITS),32)
@@ -18,10 +19,22 @@ RELEASE_MODE := DEBUG
 
 # Set OS Specific Variables
 BUILD_TOOLS_DIR := $(TOP_PATH)/build_tools
+
+# Set BUILD_TOOL according to which system to use while building
 ifeq ($(OS),Windows_NT)
-include $(BUILD_TOOLS_DIR)/win_config.mk
+BUILD_TOOL := WINDOWS
 else
+BUILD_TOOL := LINUX
+endif
+# BUILD_TOOL := LINUX # Other option
+
+ifeq ($(BUILD_TOOL),WINDOWS)
+include $(BUILD_TOOLS_DIR)/win_config.mk
+else ifeq ($(BUILD_TOOL),LINUX)
 include $(BUILD_TOOLS_DIR)/linux_config.mk
+else
+$(info "Incorrect BUILD_TOOL set, use WINDOWS or LINUX")
+exit
 endif
 
 include $(BUILD_TOOLS_DIR)/vars_config.mk
