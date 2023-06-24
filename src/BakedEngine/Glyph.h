@@ -18,22 +18,41 @@ enum class GlyphSortType
 	TEXTURE
 };
 
-class Glyph
+struct GlyphLeftOvers
 {
-public:
-	Glyph() {};
-	Glyph(const glm::vec4& destRect, const glm::vec4& uvRect, GLuint texture, float depth, const ColorRGBA8& color);
-	Glyph(const glm::vec4& destRect, const glm::vec4& uvRect, GLuint texture, float depth, const ColorRGBA8& color, float angle);
+	GlyphLeftOvers() {};
+	GlyphLeftOvers(GLuint texture, const float& depth) : _texture(texture), _depth(depth) {};
 
 	GLuint _texture;
 	float _depth;
 
+	// VertexData _topLeft;
+	// VertexData _bottomLeft;
+	// VertexData _topRight;
+	// VertexData _bottomRight;
+};
+
+
+class Glyph
+{
+public:
+	Glyph() {};
+	Glyph(const glm::vec4& destRect, const glm::vec4& uvRect, const ColorRGBA8& color);
+	Glyph(const glm::vec4& destRect, const glm::vec4& uvRect, const ColorRGBA8& color, const float& angle);
+
+	// GLuint _texture;
+	// float _depth;
+
 	VertexData _topLeft;
 	VertexData _bottomLeft;
-	VertexData _topRight;
 	VertexData _bottomRight;
+	VertexData _bottomRight1;
+	VertexData _topRight;
+	VertexData _topLeft1;
 private:
-	glm::vec2 rotatePoint(glm::vec2 pos, float angle);
+	glm::vec2 rotatePoint(const glm::vec2& pos, float angle);
 };
+
+constexpr int GLYPH_OFFSET_SIZE = sizeof(Glyph) / sizeof(VertexData);
 
 } // End of namespace BakedEngine

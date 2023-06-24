@@ -4,7 +4,7 @@
 
 CXX := g++
 AR := ar
-CXXFLAGS := -std=c++20 -Wall -Werror -Wextra -Wconversion -Wunused \
+CXXFLAGS := -std=$(CXXSTANDARD) -Wall -Werror -Wextra -Wconversion -Wunused \
    	        -Wpointer-arith -Wcast-qual -Wno-missing-braces -Wcast-align \
            	-Wmissing-field-initializers -fexceptions -fstack-protector-strong \
 			--param=ssp-buffer-size=4 -m$(BITS) -DLINUX

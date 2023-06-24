@@ -5,7 +5,7 @@
 # C++ Variables
 CXX := /c/Program\\ Files\\ \\(x86\\)/Microsoft\\ Visual\\ Studio/2022/BuildTools/VC/Tools/MSVC/14.36.32532/bin/HostX64/x64/cl
 AR :=
-CXXFLAGS := -std:c++20 -W4 -WX -sdl -options:strict -DWINDOWS
+CXXFLAGS := -std:$(CXXSTANDARD) -W4 -EHsc -sdl -options:strict -DWINDOWS
 
 ifeq ($(RELEASE_MODE),RELEASE)
 CXXFLAGS += -O2

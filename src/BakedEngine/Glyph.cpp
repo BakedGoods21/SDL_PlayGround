@@ -5,8 +5,7 @@
 namespace BakedEngine
 {
 
-Glyph::Glyph(const glm::vec4& destRect, const glm::vec4& uvRect, GLuint texture, float depth, const ColorRGBA8& color)
-	: _texture(texture), _depth(depth)
+Glyph::Glyph(const glm::vec4& destRect, const glm::vec4& uvRect, const ColorRGBA8& color)
 {
 	_topLeft.color = color;
 	_topLeft.setPosition(destRect.x, (destRect.y + destRect.w));
@@ -25,8 +24,7 @@ Glyph::Glyph(const glm::vec4& destRect, const glm::vec4& uvRect, GLuint texture,
 	_topRight.setUV(uvRect.x + uvRect.z, uvRect.y + uvRect.w);
 };
 
-Glyph::Glyph(const glm::vec4& destRect, const glm::vec4& uvRect, GLuint texture, float depth, const ColorRGBA8& color, float angle)
-	: _texture(texture), _depth(depth)
+Glyph::Glyph(const glm::vec4& destRect, const glm::vec4& uvRect, const ColorRGBA8& color, const float& angle)
 {
 	glm::vec2 halfDimensions(destRect.z / 2.0f, destRect.w / 2.0f);
 
@@ -46,6 +44,7 @@ Glyph::Glyph(const glm::vec4& destRect, const glm::vec4& uvRect, GLuint texture,
 	_topLeft.color = color;
 	_topLeft.setPosition(destRect.x + tl.x, destRect.y + tl.y);
 	_topLeft.setUV(uvRect.x, uvRect.y + uvRect.w);
+	_topLeft1 = _topLeft;
 
 	_bottomLeft.color = color;
 	_bottomLeft.setPosition(destRect.x + bl.x, destRect.y + bl.y);
@@ -54,14 +53,18 @@ Glyph::Glyph(const glm::vec4& destRect, const glm::vec4& uvRect, GLuint texture,
 	_bottomRight.color = color;
 	_bottomRight.setPosition(destRect.x + br.x, destRect.y + br.y);
 	_bottomRight.setUV(uvRect.x + uvRect.z, uvRect.y);
+	_bottomRight1 = _bottomRight;
 
 	_topRight.color = color;
 	_topRight.setPosition(destRect.x + tr.x, destRect.y + tr.y);
 	_topRight.setUV(uvRect.x + uvRect.z, uvRect.y + uvRect.w);
 };
 
-glm::vec2 Glyph::rotatePoint(glm::vec2 pos, float angle)
+glm::vec2 Glyph::rotatePoint(const glm::vec2& pos, float angle)
 {
+	while (angle >= 360) { angle -= 360; }
+	while (angle < 0) { angle += 360; }
+
 	glm::vec2 newv;
 	newv.x = (float)(pos.x * bakedCos[(int)angle] - pos.y * bakedSin[(int)angle]);
 	newv.y = (float)(pos.x * bakedSin[(int)angle] + pos.y * bakedCos[(int)angle]);

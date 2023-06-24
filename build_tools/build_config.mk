@@ -8,16 +8,16 @@ build_all : copy_library_files build
 build : $(DST_OBJS)
 #	@mkdir -p $(^D)
 	@$(CXX) $^ $(LIB_PATHS) $(LIB_FLAGS) $(CXX_EXE_NAME_FLAG) $(OBJ_LOC_NAME)
-	$(info Build Successful)
+	@echo Build Successful
 
 $(DST_DIR)/%$(CXX_OBJ_SUFFIX): $(SRC_DIR)/%.cpp
 	@mkdir -p $(@D)
-	$(CXX) $(LIB_INCLUDES) $(CXXFLAGS) -c $< $(CXX_OBJ_NAME_FLAG) $@
-	$(info Compiled $^)
+	@$(CXX) $(LIB_INCLUDES) $(CXXFLAGS) -c $< $(CXX_OBJ_NAME_FLAG) $@
+	@echo Compiled $^
 
 copy_library_files : $(BAKED_LIB_DIR) $(BAKED_INCLUDE_DIR)
 	@cp $(LIBRARY_DEPENDENCIES) $(TOP_PATH)
-	$(info Copied Dependencies Successfully)
+	@echo Copied Dependencies Successfully
 
 
 # # =======================================================

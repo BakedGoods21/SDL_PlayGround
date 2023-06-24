@@ -21,20 +21,23 @@ struct ColorRGBA8
 	GLubyte alpha{0};
 };
 
+typedef glm::vec2 Position;
+typedef glm::vec2 UV;
+
 struct VertexData
 {
 	VertexData() {};
-	VertexData(glm::vec2 newPos, ColorRGBA8 newColor, glm::vec2 newUV) : position(newPos), color(newColor), uv(newUV) {};
-	VertexData(GLfloat newX, GLfloat newY, GLubyte r, GLubyte g, GLubyte b, GLubyte a, GLfloat newU, GLfloat newV)
+	VertexData(const glm::vec2& newPos, const ColorRGBA8 newColor, const glm::vec2 newUV) : position(newPos), color(newColor), uv(newUV) {};
+	VertexData(const GLfloat& newX, const GLfloat& newY, const GLubyte& r, const GLubyte& g, const GLubyte& b, const GLubyte& a, const GLfloat& newU, const GLfloat& newV)
 						: position(newX, newY), color(r, g, b, a), uv(newU, newV) {};
-	VertexData(glm::vec2 newPos, GLubyte r, GLubyte g, GLubyte b, GLubyte a, glm::vec2 newUV)
+	VertexData(const glm::vec2& newPos, const GLubyte& r, const GLubyte& g, const GLubyte& b, const GLubyte& a, const glm::vec2& newUV)
 						: position(newPos), color(r, g, b, a), uv(newUV) {};
 
-	glm::vec2 position;
+	Position position;
 	ColorRGBA8 color;
-	glm::vec2 uv;
+	UV uv;
 
-	void setPosition(GLfloat x, GLfloat y)
+	void setPosition(const GLfloat& x, const GLfloat& y)
 	{
 		position.x = x;
 		position.y = y;
@@ -48,7 +51,7 @@ struct VertexData
 		color.alpha = alpha;
 	}
 
-	void setUV(GLfloat u, GLfloat v)
+	void setUV(const GLfloat& u, const GLfloat& v)
 	{
 		uv.x = u;
 		uv.y = v;
