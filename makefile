@@ -4,7 +4,7 @@
 
 # Sets the root git repo absolute path
 TOP_PATH := $(shell git rev-parse --show-toplevel)
-3RD_PARTY_LIB_DIR := C:/Users/warre/Libraries
+3RD_PARTY_LIB_DIR := C:/Users/Warren/Libraries
 CXXSTANDARD := c++20
 
 # Set bit (Compile 32 or 64 bit binaries)
