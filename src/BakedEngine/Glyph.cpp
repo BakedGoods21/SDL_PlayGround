@@ -10,6 +10,7 @@ Glyph::Glyph(const glm::vec4& destRect, const glm::vec4& uvRect, const ColorRGBA
 	_topLeft.color = color;
 	_topLeft.setPosition(destRect.x, (destRect.y + destRect.w));
 	_topLeft.setUV(uvRect.x, uvRect.y + uvRect.w);
+	_topLeft1 = _topLeft;
 
 	_bottomLeft.color = color;
 	_bottomLeft.setPosition(destRect.x, destRect.y);
@@ -18,6 +19,7 @@ Glyph::Glyph(const glm::vec4& destRect, const glm::vec4& uvRect, const ColorRGBA
 	_bottomRight.color = color;
 	_bottomRight.setPosition(destRect.x + destRect.z, destRect.y);
 	_bottomRight.setUV(uvRect.x + uvRect.z, uvRect.y);
+	_bottomRight1 = _bottomRight;
 
 	_topRight.color = color;
 	_topRight.setPosition(destRect.x + destRect.z, (destRect.y + destRect.w));

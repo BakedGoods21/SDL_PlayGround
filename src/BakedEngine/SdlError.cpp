@@ -1,5 +1,6 @@
 // C++ Libraries
 #include <stdlib.h>
+#include <iostream> // DEBUG
 
 // BakedEngine Libraries
 #include "BakedEngine/SdlError.h"
@@ -12,6 +13,10 @@ void CustomSdlError::DisplayError(SDL_MessageBoxFlags messageType, std::string t
 	if (messageType != SDL_MessageBoxFlags::SDL_MESSAGEBOX_INFORMATION)
 	{
 		SDL_ShowSimpleMessageBox(messageType, title.c_str(), message.c_str(), window);
+	}
+	else
+	{
+		std::cerr << message << std::endl;
 	}
 
 	if (messageType == SDL_MessageBoxFlags::SDL_MESSAGEBOX_ERROR)

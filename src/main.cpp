@@ -1,5 +1,4 @@
 // C++ Includes
-#include <thread>
 #include <iostream>
 
 // Windows Libraries
@@ -34,14 +33,7 @@ int main(int argc, char** argv)
 #endif
 
 	MainGame mainGame;
-
-	std::thread test(&MainGame::run, &mainGame);
-
-	std::string throwAway;
-	std::getline(std::cin, throwAway);
-	mainGame.stop();
-
-	test.join();
+	mainGame.run();
 
 	return 0;
 }

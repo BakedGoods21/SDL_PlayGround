@@ -66,14 +66,14 @@ void SpriteBatch::prepareBatches()
 	glBindBuffer(GL_ARRAY_BUFFER, _vbo);
 
 	std::vector<Glyph> drawGlyphs;
-	drawGlyphs.resize(_glyphPointers.size());
+	drawGlyphs.reserve(_glyphPointers.size());
 
 	for (Glyph* glyph : _glyphPointers)
 	{
 		drawGlyphs.push_back(*glyph);
 	}
 
-	const int NUM_OF_VERTICES = (int)(drawGlyphs.size() * sizeof(Glyph));
+	const int NUM_OF_VERTICES = (int)(drawGlyphs.size() * GLYPH_OFFSET_SIZE);
 
 	// Orphan the data
 	glBufferData(GL_ARRAY_BUFFER, NUM_OF_VERTICES, nullptr, GL_DYNAMIC_DRAW);
@@ -92,6 +92,8 @@ void SpriteBatch::renderBatches()
 		glBindTexture(GL_TEXTURE_2D, _glyphLeftovers[i]._texture);
 
 		glDrawArrays(GL_TRIANGLES, i * GLYPH_OFFSET_SIZE, GLYPH_OFFSET_SIZE);
+
+		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
 	glBindVertexArray(0);
@@ -100,7 +102,9 @@ void SpriteBatch::renderBatches()
 void SpriteBatch::resetBatches()
 {
 	// _renderBatches.clear();
+	_glyphPointers.clear();
 	_glyphs.clear();
+	_glyphLeftovers.clear();
 }
 
 

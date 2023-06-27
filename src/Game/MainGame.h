@@ -3,6 +3,7 @@
 // BakedEngine Includes
 #include "BakedEngine/Window.h"
 #include "BakedEngine/GLSLProgram.h"
+#include <BakedEngine/InputManager.h>
 
 class MainGame
 {
@@ -20,4 +21,7 @@ private:
 
 	// GLSL Program
 	BakedEngine::GLSLProgram m_colorShaderProgram;
+
+	// Input Manager
+	BakedEngine::InputManager m_inputManager;
 };

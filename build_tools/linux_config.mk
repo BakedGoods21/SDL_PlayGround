@@ -7,7 +7,7 @@ AR := ar
 CXXFLAGS := -std=$(CXXSTANDARD) -Wall -Werror -Wextra -Wconversion -Wunused \
    	        -Wpointer-arith -Wcast-qual -Wno-missing-braces -Wcast-align \
            	-Wmissing-field-initializers -fexceptions -fstack-protector-strong \
-			--param=ssp-buffer-size=4 -m$(BITS) -DLINUX
+			--param=ssp-buffer-size=4 -m$(BITS) -DLINUX -Wl,-subsystem,windows
 # -Wl,-subsystem,windows # Need for later
 # -Wold-style-cast -Wshadow
 CXX_OBJ_NAME_FLAG := -o
