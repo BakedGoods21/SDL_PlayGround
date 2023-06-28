@@ -70,3 +70,5 @@ build_clean_test:
 # 	$$target ; \
 # 	echo ; \
 # 	done
+
+-include $(DEPS)
