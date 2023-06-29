@@ -4,6 +4,7 @@
 #include "BakedEngine/Window.h"
 #include "BakedEngine/GLSLProgram.h"
 #include <BakedEngine/InputManager.h>
+#include "BakedEngine/SpriteBatch.h"
 
 class MainGame
 {
@@ -24,4 +25,7 @@ private:
 
 	// Input Manager
 	BakedEngine::InputManager m_inputManager;
+
+	// SpriteBatch
+	BakedEngine::SpriteBatch spriteBatch;
 };

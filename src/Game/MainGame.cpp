@@ -7,7 +7,6 @@
 #include "BakedEngine/Glyph.h"
 #include "BakedEngine/GLTexture.h"
 #include "BakedEngine/ResourceManager.h"
-#include "BakedEngine/SpriteBatch.h"
 
 // Game Libraries
 #include "Game/MainGame.h"
@@ -33,6 +32,8 @@ MainGame::MainGame()
 	m_colorShaderProgram.linkShaders();
 
 	isRunning = true;
+
+	spriteBatch.init();
 }
 
 void MainGame::run()
@@ -48,6 +49,7 @@ void MainGame::run()
 		// Glsl
 		m_colorShaderProgram.use();
 
+		glActiveTexture(GL_TEXTURE0);
 		GLint textureLocation = m_colorShaderProgram.getUniformLocation("mySampler");
 		if (textureLocation == -1)
 		{
@@ -64,11 +66,14 @@ void MainGame::run()
 		color.blue = 0;
 		color.alpha = 255;
 
-		BakedEngine::SpriteBatch spriteBatch;
+		spriteBatch.begin();
 		spriteBatch.draw(pos, uv, texture.id, 0.0f, color);
 		spriteBatch.render();
 
 		gameWindow.swapBuffer();
+
+		// Unbind Texture
+		glBindTexture(GL_TEXTURE_2D, 0);
 
 		// Glsl
 		m_colorShaderProgram.unuse();

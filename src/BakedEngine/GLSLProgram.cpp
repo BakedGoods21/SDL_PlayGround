@@ -76,6 +76,7 @@ bool GLSLProgram::compileShader(const std::string& shaderFilePath, GLuint shader
 		// Provide the infolog in whatever manor you deem best.
 		// Exit with failure
 		glDeleteShader(shaderId);
+		CustomSdlError::DisplayError(SDL_MessageBoxFlags::SDL_MESSAGEBOX_ERROR, "Shader Error", "Could not compile shader!");
 		return false;
 	}
 	return true;
@@ -102,6 +103,7 @@ bool GLSLProgram::linkShaders()
 		// Don't leak shaders either
 		glDeleteShader(_vertexShaderId);
 		glDeleteShader(_fragmentShaderId);
+		CustomSdlError::DisplayError(SDL_MessageBoxFlags::SDL_MESSAGEBOX_ERROR, "Shader Error", "Could not link shader!");
 
 		return false;
 	}

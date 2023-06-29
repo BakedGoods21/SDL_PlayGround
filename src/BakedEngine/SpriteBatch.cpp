@@ -8,7 +8,9 @@
 namespace BakedEngine
 {
 
-SpriteBatch::SpriteBatch()
+SpriteBatch::SpriteBatch() {}
+
+void SpriteBatch::init()
 {
 	// Tell OpenGL to generate a Vertex Array Object buffer and Vertex Buffer Object buffer
 	glGenVertexArrays(1, &_vao);
@@ -19,66 +21,88 @@ SpriteBatch::SpriteBatch()
 	glBindBuffer(GL_ARRAY_BUFFER, _vbo);
 
 	// Tell OpenGL that their is going to be 3 attributes it needs to know about to parse
-	glEnableVertexAttribArray((int)VO_ATTRIBUTES::POSITION);
-	glEnableVertexAttribArray((int)VO_ATTRIBUTES::COLOR);
-	glEnableVertexAttribArray((int)VO_ATTRIBUTES::UV);
+	glEnableVertexAttribArray((GLuint)VO_ATTRIBUTES::POSITION);
+	glEnableVertexAttribArray((GLuint)VO_ATTRIBUTES::COLOR);
+	glEnableVertexAttribArray((GLuint)VO_ATTRIBUTES::UV);
 
 	// This is the position attribute pointer
-	glVertexAttribPointer((int)VO_ATTRIBUTES::POSITION, (sizeof(Position) / (sizeof(float))), GL_FLOAT, GL_FALSE, sizeof(VertexData), (void*)offsetof(VertexData, position));
+	glVertexAttribPointer((GLuint)VO_ATTRIBUTES::POSITION, POSITION_ELEMENT_SIZE, GL_FLOAT, GL_FALSE, VERTEX_DATA_SIZE, (void*)offsetof(VertexData, position));
 
 	// This is the color attribute pointer
-	glVertexAttribPointer((int)VO_ATTRIBUTES::COLOR, sizeof(BakedEngine::ColorRGBA8), GL_UNSIGNED_BYTE, GL_TRUE, sizeof(VertexData), (void*)offsetof(VertexData, color));
+	glVertexAttribPointer((GLuint)VO_ATTRIBUTES::COLOR, sizeof(BakedEngine::ColorRGBA8), GL_UNSIGNED_BYTE, GL_TRUE, VERTEX_DATA_SIZE, (void*)offsetof(VertexData, color));
 
 	// This is the UV attribute pointer
-	glVertexAttribPointer((int)VO_ATTRIBUTES::UV, (sizeof(UV) / (sizeof(float))), GL_FLOAT, GL_FALSE, sizeof(VertexData), (void*) offsetof(VertexData, uv));
+	glVertexAttribPointer((GLuint)VO_ATTRIBUTES::UV, UV_ELEMENT_SIZE, GL_FLOAT, GL_FALSE, VERTEX_DATA_SIZE, (void*)offsetof(VertexData, uv));
 
 	// Unbind the vbo and vao as we are done using them
-	glBindVertexArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindVertexArray(0);
 }
 
 SpriteBatch::~SpriteBatch() { }
 
+void SpriteBatch::begin()
+{
+	resetBatches();
+}
 
 void SpriteBatch::draw(const glm::vec4& destRect, const glm::vec4& uvRect, GLuint texture, const float& depth, const ColorRGBA8& color)
 {
-	_glyphLeftovers.emplace_back(texture, depth);
-	_glyphs.emplace_back(destRect, uvRect, color);
+	_glyphs.emplace_back(destRect, uvRect, color, texture, depth);
 }
 
 void SpriteBatch::render()
 {
-	_glyphPointers.resize(_glyphs.size());
+	_glyphPointers.reserve(_glyphs.size());
 	const unsigned int GLYPH_SIZE = (int)_glyphs.size();
 	for (unsigned int i = 0; i < GLYPH_SIZE; i++)
 	{
-		_glyphPointers[i] = &_glyphs[i];
+		_glyphPointers.push_back(&_glyphs[i]);
 	}
 
-	sortGlyphs(0, GLYPH_SIZE);
+	sortGlyphs(0, GLYPH_SIZE-1);
 	prepareBatches();
 	renderBatches();
-	resetBatches();
 }
 
 void SpriteBatch::prepareBatches()
 {
-	glBindBuffer(GL_ARRAY_BUFFER, _vbo);
-
-	std::vector<Glyph> drawGlyphs;
+	int offset = 0;
+	std::vector<GlyphVertices> drawGlyphs;
 	drawGlyphs.reserve(_glyphPointers.size());
 
-	for (Glyph* glyph : _glyphPointers)
+	const unsigned int num_of_glyphs = (unsigned int)_glyphPointers.size();
+	if (num_of_glyphs > 0)
 	{
-		drawGlyphs.push_back(*glyph);
+		drawGlyphs.push_back(_glyphPointers[0]->_vertices);
+		vaoInfo.emplace_back(_glyphPointers[0]->_texture, GLYPH_VERTICE_SIZE, offset);
 	}
 
-	const int NUM_OF_VERTICES = (int)(drawGlyphs.size() * GLYPH_OFFSET_SIZE);
+	for (unsigned int i = 1; i < num_of_glyphs; i++)
+	{
+		Glyph* glyph = _glyphPointers[i];
+		drawGlyphs.push_back(glyph->_vertices);
+
+		if (glyph->_texture != vaoInfo.back()._texture)
+		{
+			vaoInfo.emplace_back(glyph->_texture, GLYPH_VERTICE_SIZE, (offset += 6));
+		}
+		else
+		{
+			offset += GLYPH_VERTICE_SIZE;
+			vaoInfo.back().increaseVerticeCount(GLYPH_VERTICE_SIZE);
+		}
+	}
+
+	const int NUM_OF_VERTICES = (int)(drawGlyphs.size() * GLYPH_VERTICE_SIZE);
+
+	glBindBuffer(GL_ARRAY_BUFFER, _vbo);
 
 	// Orphan the data
-	glBufferData(GL_ARRAY_BUFFER, NUM_OF_VERTICES, nullptr, GL_DYNAMIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, NUM_OF_VERTICES * VERTEX_DATA_SIZE, nullptr, GL_DYNAMIC_DRAW);
+	// glBufferData(GL_ARRAY_BUFFER, NUM_OF_VERTICES * VERTEX_DATA_SIZE, drawGlyphs.data(), GL_DYNAMIC_DRAW);
 	// Upload the data
-	glBufferSubData(GL_ARRAY_BUFFER, 0, NUM_OF_VERTICES, drawGlyphs.data());
+	glBufferSubData(GL_ARRAY_BUFFER, 0, NUM_OF_VERTICES * VERTEX_DATA_SIZE, drawGlyphs.data());
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
@@ -87,13 +111,13 @@ void SpriteBatch::renderBatches()
 {
 	glBindVertexArray(_vao);
 
-	for (unsigned int i = 0; i < _glyphLeftovers.size(); i++)
+	for (unsigned int i = 0; i < vaoInfo.size(); i++)
 	{
-		glBindTexture(GL_TEXTURE_2D, _glyphLeftovers[i]._texture);
+		glBindTexture(GL_TEXTURE_2D, vaoInfo[i]._texture);
 
-		glDrawArrays(GL_TRIANGLES, i * GLYPH_OFFSET_SIZE, GLYPH_OFFSET_SIZE);
+		glDrawArrays(GL_TRIANGLES, vaoInfo[i]._offset, vaoInfo[i]._numOfVertices);
 
-		glBindTexture(GL_TEXTURE_2D, 0);
+		// glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
 	glBindVertexArray(0);
@@ -101,21 +125,20 @@ void SpriteBatch::renderBatches()
 
 void SpriteBatch::resetBatches()
 {
-	// _renderBatches.clear();
+	vaoInfo.clear();
 	_glyphPointers.clear();
 	_glyphs.clear();
-	_glyphLeftovers.clear();
 }
 
 
 int SpriteBatch::partition(int start, int end)
 {
-    GlyphLeftOvers& pivot = _glyphLeftovers[start];
+    Glyph* pivot = _glyphPointers[start];
 
     int count = 0;
     for (int i = start + 1; i <= end; i++)
 	{
-        if (_glyphLeftovers[i]._texture <= pivot._texture)
+        if (_glyphPointers[i]->_texture <= pivot->_texture)
 		{
             count++;
 		}
@@ -123,7 +146,6 @@ int SpriteBatch::partition(int start, int end)
 
     // Giving pivot element its correct position
     int pivotIndex = start + count;
-    std::swap(_glyphLeftovers[pivotIndex], _glyphLeftovers[start]);
     std::swap(_glyphPointers[pivotIndex], _glyphPointers[start]);
 
     // Sorting left and right parts of the pivot element
@@ -131,22 +153,18 @@ int SpriteBatch::partition(int start, int end)
 
     while (i < pivotIndex && j > pivotIndex)
 	{
-        while (_glyphLeftovers[i]._texture <= pivot._texture)
+        while (_glyphPointers[i]->_texture <= pivot->_texture)
 		{
             i++;
         }
 
-        while (_glyphLeftovers[j]._texture > pivot._texture)
+        while (_glyphPointers[j]->_texture > pivot->_texture)
 		{
             j--;
         }
 
         if (i < pivotIndex && j > pivotIndex)
 		{
-            std::swap(_glyphLeftovers[i++], _glyphLeftovers[j--]);
-            std::swap(_glyphPointers[i++], _glyphPointers[j--]);
-
-            std::swap(_glyphLeftovers[i++], _glyphLeftovers[j--]);
             std::swap(_glyphPointers[i++], _glyphPointers[j--]);
         }
     }

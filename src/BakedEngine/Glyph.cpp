@@ -4,8 +4,7 @@
 
 namespace BakedEngine
 {
-
-Glyph::Glyph(const glm::vec4& destRect, const glm::vec4& uvRect, const ColorRGBA8& color)
+GlyphVertices::GlyphVertices(const glm::vec4& destRect, const glm::vec4& uvRect, const ColorRGBA8& color)
 {
 	_topLeft.color = color;
 	_topLeft.setPosition(destRect.x, (destRect.y + destRect.w));
@@ -24,9 +23,9 @@ Glyph::Glyph(const glm::vec4& destRect, const glm::vec4& uvRect, const ColorRGBA
 	_topRight.color = color;
 	_topRight.setPosition(destRect.x + destRect.z, (destRect.y + destRect.w));
 	_topRight.setUV(uvRect.x + uvRect.z, uvRect.y + uvRect.w);
-};
+}
 
-Glyph::Glyph(const glm::vec4& destRect, const glm::vec4& uvRect, const ColorRGBA8& color, const float& angle)
+GlyphVertices::GlyphVertices(const glm::vec4& destRect, const glm::vec4& uvRect, const ColorRGBA8& color, const float& angle)
 {
 	glm::vec2 halfDimensions(destRect.z / 2.0f, destRect.w / 2.0f);
 
@@ -60,9 +59,9 @@ Glyph::Glyph(const glm::vec4& destRect, const glm::vec4& uvRect, const ColorRGBA
 	_topRight.color = color;
 	_topRight.setPosition(destRect.x + tr.x, destRect.y + tr.y);
 	_topRight.setUV(uvRect.x + uvRect.z, uvRect.y + uvRect.w);
-};
+}
 
-glm::vec2 Glyph::rotatePoint(const glm::vec2& pos, float angle)
+glm::vec2 GlyphVertices::rotatePoint(const glm::vec2& pos, float angle)
 {
 	while (angle >= 360) { angle -= 360; }
 	while (angle < 0) { angle += 360; }

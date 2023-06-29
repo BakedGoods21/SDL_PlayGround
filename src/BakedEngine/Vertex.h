@@ -58,4 +58,8 @@ struct VertexData
 	}
 };
 
+constexpr GLint POSITION_ELEMENT_SIZE = (sizeof(Position) / (sizeof(float)));
+constexpr GLint UV_ELEMENT_SIZE = (sizeof(UV) / (sizeof(float)));
+constexpr GLint VERTEX_DATA_SIZE = sizeof(VertexData);
+
 } // End of namespace BakedEngine

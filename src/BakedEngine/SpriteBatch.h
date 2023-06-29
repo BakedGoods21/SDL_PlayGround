@@ -31,6 +31,10 @@ public:
 	SpriteBatch();
 	~SpriteBatch();
 
+	void begin();
+
+	void init();
+
 	void draw(const glm::vec4& destRect, const glm::vec4& uvRect, GLuint texture, const float& depth, const ColorRGBA8& color);
 	void render();
 
@@ -46,7 +50,7 @@ private:
 	GLuint _vbo;
 	GLuint _vao;
 
-	std::vector<GlyphLeftOvers> _glyphLeftovers;
+	std::vector<GlyphVAOInfo> vaoInfo;
 	std::vector<Glyph> _glyphs;
 	std::vector<Glyph*> _glyphPointers;
 };
