@@ -20,8 +20,8 @@ DEPS := $(DST_OBJS:%$(CXX_OBJ_SUFFIX)=%.d)
 
 LIB_INCLUDES := -I$(SDL_INCLUDE_PATH) \
 			    -I$(SDL2_INCLUDE_MIXER_PATH) \
-                -I$(GLEW_INCLUDE_PATH) \
                	-I$(GLM_INCLUDE_PATH) \
+				-I$(VULKAN_INCLUDE_PATH) \
 				-I$(SRC_DIR)
 
 

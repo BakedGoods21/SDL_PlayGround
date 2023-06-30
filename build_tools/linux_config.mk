@@ -7,7 +7,7 @@ AR := ar
 CXXFLAGS := -std=$(CXXSTANDARD) -Wall -Werror -Wextra -Wconversion -Wunused \
    	        -Wpointer-arith -Wcast-qual -Wno-missing-braces -Wcast-align \
            	-Wmissing-field-initializers -fexceptions -fstack-protector-strong \
-			--param=ssp-buffer-size=4 -m$(BITS) -DLINUX -Wl,-subsystem,windows -MMD -MP
+			--param=ssp-buffer-size=4 -m$(BITS) -DLINUX -D$(RELEASE_MODE) -Wl,-subsystem,windows -MMD -MP
 # -Wl,-subsystem,windows # Need for later
 # -Wold-style-cast -Wshadow
 CXX_OBJ_NAME_FLAG := -o
@@ -39,10 +39,6 @@ SDL_VERSION := SDL2-2.26.5
 SDL_PATH := $(LIB_PATH)/$(SDL_VERSION)/x86_64-w64-mingw32
 SDL_INCLUDE_PATH := $(SDL_PATH)/include/SDL2
 
-GLEW_VERSION := glew-2.1.0
-GLEW_PATH := $(LIB_PATH)/$(GLEW_VERSION)
-GLEW_INCLUDE_PATH := $(GLEW_PATH)/include
-
 GLM_VERSION := glm-0.9.9.8
 GLM_PATH := $(LIB_PATH)/$(GLM_VERSION)
 GLM_INCLUDE_PATH := $(GLM_PATH)
@@ -51,12 +47,18 @@ SDL_MIXER_VERSION := SDL2_mixer-2.6.3
 SDL2_MIXER_PATH := $(LIB_PATH)/$(SDL_MIXER_VERSION)/x86_64-w64-mingw32
 SDL2_INCLUDE_MIXER_PATH := $(SDL2_MIXER_PATH)/include/SDL2
 
+VULKAN_VERSION := VulkanSDK-1.3.250.1
+VULKAN_PATH := $(LIB_PATH)/$(VULKAN_VERSION)
+VULKAN_INCLUDE_PATH := $(VULKAN_PATH)/Include
+
 LIB_PATHS := -L$(SDL_PATH)/lib \
 			 -L$(SDL2_MIXER_PATH)/lib \
-			 -L$(GLEW_PATH)/lib
+			 -L$(GLEW_PATH)/lib \
+			 -L$(VULKAN_PATH)/lib
+#			  -L$(VULKAN_PATH)/lib
 
-LIB_FLAGS := -lmingw32 -lSDL2main -lSDL2 -lSDL2_mixer -lopengl32 -lglew32
+LIB_FLAGS := -lmingw32 -lSDL2main -lSDL2 -lSDL2_mixer -lvulkan-1
 
 LIBRARY_DEPENDENCIES := $(SDL_PATH)/bin/SDL2.dll \
-						$(GLEW_PATH)/lib/glew32.dll \
 						$(SDL2_MIXER_PATH)/bin/SDL2_mixer.dll
+#						 $(VULKAN_PATH)/bin/

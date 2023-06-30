@@ -2,9 +2,13 @@
 
 // C++ Libraries
 #include <string>
+#include <vector>
 
 // SDL Libraries
 #include <SDL.h>
+
+// Vulkan Includes
+#include <vulkan/vulkan_core.h>
 
 namespace BakedEngine
 {
@@ -31,20 +35,27 @@ public:
 private:
 
 	bool initSdl(std::string windowName, int screenWidth, int screenHeight, uint32_t currentFlags);
-	bool initGl();
-	bool initGlew();
+	bool initVulkan();
+	void createInstance();
+	void populateDebugMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT& createInfo);
+	void setupDebugMessenger();
+	bool checkValidationLayerSupport();
+	static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(
+			VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity,
+			VkDebugUtilsMessageTypeFlagsEXT messageType,
+			const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData,
+			void* pUserData);
+	std::vector<const char*> getRequiredExtensions();
 
 	// SDL Program
 	SDL_Window* _sdlWindow = nullptr;
 
-	// OpenGL Attributes
-	SDL_GLContext _mainContext = NULL;
+	// Vulkan Instance
+	VkInstance _instance;
+	VkDebugUtilsMessengerEXT debugMessenger;
 
 	int _screenWidth;
 	int _screenHeight;
-
-	//Debug??
-	bool _isDoubleBufferEnabled = true;
 };
 
 } // End of namespace BakedEngine

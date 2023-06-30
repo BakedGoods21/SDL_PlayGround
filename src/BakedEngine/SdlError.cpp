@@ -21,7 +21,7 @@ void CustomSdlError::DisplayError(SDL_MessageBoxFlags messageType, std::string t
 
 	if (messageType == SDL_MessageBoxFlags::SDL_MESSAGEBOX_ERROR)
 	{
-		exit(EXIT_FAILURE);
+		throw std::runtime_error(message.c_str());
 	}
 }
 

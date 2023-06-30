@@ -2,9 +2,7 @@
 
 // BakedEngine Includes
 #include "BakedEngine/Window.h"
-#include "BakedEngine/GLSLProgram.h"
-#include <BakedEngine/InputManager.h>
-#include "BakedEngine/SpriteBatch.h"
+#include "BakedEngine/InputManager.h"
 
 class MainGame
 {
@@ -20,12 +18,6 @@ private:
 
 	BakedEngine::Window gameWindow;
 
-	// GLSL Program
-	BakedEngine::GLSLProgram m_colorShaderProgram;
-
 	// Input Manager
 	BakedEngine::InputManager m_inputManager;
-
-	// SpriteBatch
-	BakedEngine::SpriteBatch spriteBatch;
 };

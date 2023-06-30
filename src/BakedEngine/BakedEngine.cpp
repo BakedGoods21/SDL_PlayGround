@@ -1,7 +1,3 @@
-// GL Libraries
-#include <GL/glew.h>
-#include <cmath>
-
 // BakedEngine Libraries
 #include "BakedEngine/BakedEngine.h"
 #include "BakedEngine/FastTrig.h"
@@ -25,18 +21,6 @@ bool init(uint32_t subSystemFlags/* = SDL_INIT_EVERYTHING*/)
 	{
 		return false;
 	}
-
-	// OpenGL Attributes
-	const int _glMajorVersion = 3;
-	int _glMinorVersion = 1;
-	SDL_GLprofile _contextProfile = SDL_GL_CONTEXT_PROFILE_CORE;
-	bool _isDoubleBufferEnabled = true;
-
-	// Use OpenGL 3.1 core
-	SDL_GL_SetAttribute( SDL_GL_CONTEXT_MAJOR_VERSION, _glMajorVersion );
-	SDL_GL_SetAttribute( SDL_GL_CONTEXT_MINOR_VERSION, _glMinorVersion );
-	SDL_GL_SetAttribute( SDL_GL_CONTEXT_PROFILE_MASK, _contextProfile );
-	SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, _isDoubleBufferEnabled );
 
 	initializeBakedTrig();
 

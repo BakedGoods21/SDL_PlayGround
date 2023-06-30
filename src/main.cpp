@@ -28,12 +28,17 @@ int main(int argc, char** argv)
 	if (argc != 1)
 	{
 		BakedEngine::CustomSdlError::DisplayError(SDL_MessageBoxFlags::SDL_MESSAGEBOX_ERROR, "Main Error", std::to_string(argc) + " invalid args: " + argv[0], nullptr);
-		return -1;
+		return EXIT_FAILURE;
 	}
 #endif
 
-	MainGame mainGame;
-	mainGame.run();
+    try {
+		MainGame mainGame;
+		mainGame.run();
+    } catch (const std::exception& e) {
+        std::cerr << e.what() << std::endl;
+        return EXIT_FAILURE;
+    }
 
-	return 0;
+	return EXIT_SUCCESS;
 }

@@ -4,9 +4,6 @@
 // BakedEngine Libraries
 #include "BakedEngine/BakedEngine.h"
 #include "BakedEngine/SdlError.h"
-#include "BakedEngine/Glyph.h"
-#include "BakedEngine/GLTexture.h"
-#include "BakedEngine/ResourceManager.h"
 
 // Game Libraries
 #include "Game/MainGame.h"
@@ -23,63 +20,14 @@ MainGame::MainGame()
 		BakedEngine::CustomSdlError::DisplayError(SDL_MessageBoxFlags::SDL_MESSAGEBOX_ERROR, "Main Game Init", "Could not initialize gameWindow", nullptr);
 	}
 
-
-	std::cerr << "Initializing Shaders" << std::endl;
-	m_colorShaderProgram.compileShaders("resources/Shaders/colorShader.vert", "resources/Shaders/colorShader.frag");
-	m_colorShaderProgram.addAttribute("vertexPosition");
-	m_colorShaderProgram.addAttribute("vertexColor");
-	m_colorShaderProgram.addAttribute("vertexUV");
-	m_colorShaderProgram.linkShaders();
-
 	isRunning = true;
-
-	spriteBatch.init();
 }
 
 void MainGame::run()
 {
 	while (isRunning)
 	{
-		// Set the base depth to 1.0
-		glClearDepth(1.0);
-
-		// Clear the color and depth buffer
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-		// Glsl
-		m_colorShaderProgram.use();
-
-		glActiveTexture(GL_TEXTURE0);
-		GLint textureLocation = m_colorShaderProgram.getUniformLocation("mySampler");
-		if (textureLocation == -1)
-		{
-			BakedEngine::CustomSdlError::DisplayError(SDL_MessageBoxFlags::SDL_MESSAGEBOX_ERROR, "Main Game Run", "Could not find Texture location", nullptr);
-		}
-		glUniform1i(textureLocation, 0);
-
-		glm::vec4 pos(0.0f, 0.0f, 50.0f, 50.0f);
-		glm::vec4 uv(0.0f, 0.0f, 1.0f, 1.0f);
-		BakedEngine::GLTexture texture = BakedEngine::ResourceManager::getTexture("resources/Characters/BakedProductionGuy.png");
-		BakedEngine::ColorRGBA8 color;
-		color.red = 255;
-		color.green = 0;
-		color.blue = 0;
-		color.alpha = 255;
-
-		spriteBatch.begin();
-		spriteBatch.draw(pos, uv, texture.id, 0.0f, color);
-		spriteBatch.render();
-
-		gameWindow.swapBuffer();
-
-		// Unbind Texture
-		glBindTexture(GL_TEXTURE_2D, 0);
-
-		// Glsl
-		m_colorShaderProgram.unuse();
-
 		m_inputManager.update();
-
 
 		SDL_Event evnt;
 		while (SDL_PollEvent(&evnt))
