@@ -1,7 +1,7 @@
 #pragma once
 
 // BakedEngine Includes
-#include "BakedEngine/Window.h"
+#include "BakedEngine/Window/Window.h"
 #include "BakedEngine/InputManager.h"
 
 class MainGame

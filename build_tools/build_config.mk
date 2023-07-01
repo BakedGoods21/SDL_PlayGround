@@ -13,7 +13,7 @@ build : $(DST_OBJS)
 $(DST_DIR)/%$(CXX_OBJ_SUFFIX): $(SRC_DIR)/%.cpp
 	@mkdir -p $(@D)
 	@$(CXX) $(LIB_INCLUDES) $(CXXFLAGS) -c $< $(CXX_OBJ_NAME_FLAG) $@
-	@echo Compiled $^
+	@echo Compiled $<
 
 copy_library_files : $(BAKED_LIB_DIR) $(BAKED_INCLUDE_DIR)
 	@cp $(LIBRARY_DEPENDENCIES) $(TOP_PATH)
@@ -38,19 +38,19 @@ copy_library_files : $(BAKED_LIB_DIR) $(BAKED_INCLUDE_DIR)
 # Project Clean Recipes
 # =======================================================
 
-build_clean: build_clean-exe build_clean-build build_clean_test build_clean-lib# build_clean-include
+build_clean: build_clean_exe build_clean_build build_clean_test build_clean_lib# build_clean_include
 	$(info Build Clean Successful)
 
-build_clean-exe:
+build_clean_exe:
 	rm -f $(OBJ_LOC_NAME)
 
-build_clean-build:
+build_clean_build:
 	rm -rf $(DST_DIR)
 
-build_clean-lib:
+build_clean_lib:
 	rm -rf $(TOP_PATH)/*.so $(TOP_PATH)/*.a $(TOP_PATH)/*.dll $(TOP_PATH)/*.pdb
 
-# build_clean-include:
+# build_clean_include:
 # 	rm -rf $(INCLUDE_DIR)
 
 build_clean_test:

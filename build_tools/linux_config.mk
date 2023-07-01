@@ -4,10 +4,10 @@
 
 CXX := g++
 AR := ar
-CXXFLAGS := -std=$(CXXSTANDARD) -Wall -Werror -Wextra -Wconversion -Wunused \
-   	        -Wpointer-arith -Wcast-qual -Wno-missing-braces -Wcast-align \
-           	-Wmissing-field-initializers -fexceptions -fstack-protector-strong \
-			--param=ssp-buffer-size=4 -m$(BITS) -DLINUX -D$(RELEASE_MODE) -Wl,-subsystem,windows -MMD -MP
+CXXFLAGS := -std=$(CXXSTANDARD) -MMD -MP -Wall -Wextra -Werror -pedantic-errors \
+   	        -Wconversion -Wunused -Wpointer-arith -Wcast-qual -Wno-missing-braces \
+           	-Wcast-align -Wmissing-field-initializers -fexceptions -fstack-protector-strong \
+			--param=ssp-buffer-size=4 -m$(BITS) -DLINUX -D$(RELEASE_MODE)
 # -Wl,-subsystem,windows # Need for later
 # -Wold-style-cast -Wshadow
 CXX_OBJ_NAME_FLAG := -o
@@ -31,6 +31,7 @@ endif
 ifeq ($(OS),Windows_NT)
 LIB_PATH := $(3RD_PARTY_LIB_DIR)/mingww64
 PATH := $(LIB_PATH)/mingw64/bin:$(PATH)
+CXXFLAGS += -Wl,-subsystem,windows
 else
 LIB_PATH :=
 endif

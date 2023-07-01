@@ -38,6 +38,11 @@ $(info "Incorrect BUILD_TOOL set, use WINDOWS or LINUX")
 exit
 endif
 
+.SILENT:
+.PHONY: all clean printvars help build_all build \
+        copy_library_files build_clean build_clean_exe \
+		build_clean_build build_clean_lib build_clean_test
+
 include $(BUILD_TOOLS_DIR)/vars_config.mk
 include $(BUILD_TOOLS_DIR)/build_config.mk
 
@@ -45,6 +50,7 @@ include $(BUILD_TOOLS_DIR)/build_config.mk
 # =======================================================
 # Recipes
 # =======================================================
+
 
 all default : build_all #run_test
 	$(info Make All Successful)
