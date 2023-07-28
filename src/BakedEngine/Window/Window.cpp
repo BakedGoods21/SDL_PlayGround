@@ -10,6 +10,7 @@ Window::Window() {}
 
 Window::~Window()
 {
+	vkDestroySwapchainKHR(_device, _swapChain, nullptr);
 	vkDestroyDevice(_device, nullptr);
 
     if (enableValidationLayers) {
