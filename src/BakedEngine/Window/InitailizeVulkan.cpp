@@ -1,7 +1,6 @@
 // C++ Includes
 #include <set>
 #include <cstdint> // Necessary for uint32_t
-// #include <limits> // Necessary for std::numeric_limits
 
 // SDL Includes
 #include <SDL_vulkan.h>
@@ -26,6 +25,8 @@ bool Window::initVulkan()
 	pickPhysicalDevice();
 	createLogicalDevice();
 	createSwapChain();
+	createImageViews();
+	createGraphicsPipeline();
 
 	return true;
 }

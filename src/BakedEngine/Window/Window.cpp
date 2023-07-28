@@ -10,6 +10,11 @@ Window::Window() {}
 
 Window::~Window()
 {
+	for (auto imageView : swapChainImageViews)
+	{
+		vkDestroyImageView(_device, imageView, nullptr);
+	}
+
 	vkDestroySwapchainKHR(_device, _swapChain, nullptr);
 	vkDestroyDevice(_device, nullptr);
 

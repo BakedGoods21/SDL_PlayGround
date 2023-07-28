@@ -1,5 +1,6 @@
 // C++ Includes
 #include <algorithm> // Necessary for std::clamp
+#include <limits> // Necessary for std::numeric_limits
 
 // SDL Includes
 #include <SDL_vulkan.h>

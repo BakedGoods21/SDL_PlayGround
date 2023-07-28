@@ -1,3 +1,6 @@
+// C++ Includes
+#include <iostream>
+
 // SDL Libraries
 #include <SDL.h>
 
@@ -36,21 +39,27 @@ void MainGame::run()
 			{
 				case SDL_QUIT:
 					isRunning = false;
+					// std::cerr << "SDLQuit" << std::endl;
 					break;
 				case SDL_KEYDOWN:
 					m_inputManager.pressKey(evnt.key.keysym.sym);
+					// std::cerr << "KeyDown: " << evnt.key.keysym.sym << std::endl;
 					break;
 				case SDL_KEYUP:
 					m_inputManager.releaseKey(evnt.key.keysym.sym);
+					// std::cerr << "KeyUp: " << evnt.key.keysym.sym << std::endl;
 					break;
 				case SDL_MOUSEBUTTONDOWN:
 					m_inputManager.pressKey(evnt.button.button);
+					// std::cerr << "MouseButtonDown: " << evnt.key.keysym.sym << std::endl;
 					break;
 				case SDL_MOUSEBUTTONUP:
 					m_inputManager.releaseKey(evnt.button.button);
+					// std::cerr << "MouseButtonUP: " << evnt.key.keysym.sym << std::endl;
 					break;
 				case SDL_MOUSEMOTION:
 					m_inputManager.setMouseCoords((float)evnt.motion.x, (float)480 - (float)evnt.motion.y);
+					// std::cerr << "Mouse Movement: (" << evnt.motion.x << "," << evnt.motion.y << ")" << std::endl;
 					break;
 			}
 		}

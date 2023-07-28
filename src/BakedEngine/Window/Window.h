@@ -83,6 +83,8 @@ private:
 	void createSurface();
 	void pickPhysicalDevice();
 	void createLogicalDevice();
+	void createImageViews();
+	void createGraphicsPipeline();
 
 	std::vector<const char*> getRequiredExtensions();
 	bool isDeviceSuitable(VkPhysicalDevice device);
@@ -117,6 +119,9 @@ private:
 	std::vector<VkImage> swapChainImages;
 	VkFormat swapChainImageFormat;
 	VkExtent2D swapChainExtent;
+
+	// Image Views
+	std::vector<VkImageView> swapChainImageViews;
 
 	// Vulkan Debug
 	VkDebugUtilsMessengerEXT debugMessenger;
