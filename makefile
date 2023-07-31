@@ -38,13 +38,17 @@ $(info "Incorrect BUILD_TOOL set, use WINDOWS or LINUX")
 exit
 endif
 
-.SILENT:
+include $(BUILD_TOOLS_DIR)/vars_config.mk
+include $(BUILD_TOOLS_DIR)/build_config.mk
+
 .PHONY: all clean printvars help build_all build \
         copy_library_files build_clean build_clean_exe \
 		build_clean_build build_clean_lib build_clean_test
+#		$(ALL_SHADER_OBJS)
 
-include $(BUILD_TOOLS_DIR)/vars_config.mk
-include $(BUILD_TOOLS_DIR)/build_config.mk
+ifndef VERBOSE
+.SILENT:
+endif
 
 
 # =======================================================
@@ -104,6 +108,16 @@ printvars:
 	    LIB_DIR_NAME: $(LIB_DIR_NAME)\n\
 	    \n\
 	    SRC_FILES: $(SRC_FILES)\n\
+	    \n\
+	    DST_OBJS: $(DST_OBJS)\n\
+	    \n\
+	    SHADER_DIR: $(SHADER_DIR)\n\
+	    SHADER_SRC_DIR: $(SHADER_SRC_DIR)\n\
+	    SHADER_DST_DIR: $(SHADER_DST_DIR)\n\
+	    \n\
+	    ALL_SHADER_FILES: $(ALL_SHADER_FILES)\n\
+	    \n\
+	    ALL_SHADER_OBJS: $(ALL_SHADER_OBJS)\n\
 	    \n\
 	    DST_OBJS: $(DST_OBJS)\n\
 	    \n\

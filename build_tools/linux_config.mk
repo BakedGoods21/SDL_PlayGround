@@ -51,6 +51,8 @@ SDL2_INCLUDE_MIXER_PATH := $(SDL2_MIXER_PATH)/include/SDL2
 VULKAN_VERSION := VulkanSDK-1.3.250.1
 VULKAN_PATH := $(LIB_PATH)/$(VULKAN_VERSION)
 VULKAN_INCLUDE_PATH := $(VULKAN_PATH)/Include
+VULKAN_BIN_PATH := $(VULKAN_PATH)/Bin
+# TODO: Figure out linux vulkan bin path for exe's like glslc
 
 LIB_PATHS := -L$(SDL_PATH)/lib \
 			 -L$(SDL2_MIXER_PATH)/lib \

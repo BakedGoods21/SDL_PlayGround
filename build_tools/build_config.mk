@@ -2,22 +2,36 @@
 # Project Recipes
 # =======================================================
 
-build_all : copy_library_files build
+build_all : copy_library_files build_exe compile_shaders_files
 	$(info Build All Successful)
 
-build : $(DST_OBJS)
+build_exe : $(DST_OBJS)
 #	@mkdir -p $(^D)
-	@$(CXX) $^ $(LIB_PATHS) $(LIB_FLAGS) $(CXX_EXE_NAME_FLAG) $(OBJ_LOC_NAME)
+	$(CXX) $^ $(LIB_PATHS) $(LIB_FLAGS) $(CXX_EXE_NAME_FLAG) $(OBJ_LOC_NAME)
 	@echo Build Successful
 
-$(DST_DIR)/%$(CXX_OBJ_SUFFIX): $(SRC_DIR)/%.cpp
-	@mkdir -p $(@D)
-	@$(CXX) $(LIB_INCLUDES) $(CXXFLAGS) -c $< $(CXX_OBJ_NAME_FLAG) $@
+$(DST_DIR)/%$(CXX_OBJ_SUFFIX) : $(SRC_DIR)/%.cpp
+	mkdir -p $(@D)
+	$(CXX) $(LIB_INCLUDES) $(CXXFLAGS) -c $< $(CXX_OBJ_NAME_FLAG) $@
 	@echo Compiled $<
 
 copy_library_files : $(BAKED_LIB_DIR) $(BAKED_INCLUDE_DIR)
-	@cp $(LIBRARY_DEPENDENCIES) $(TOP_PATH)
+	cp $(LIBRARY_DEPENDENCIES) $(TOP_PATH)
 	@echo Copied Dependencies Successfully
+
+
+compile_shaders_files : $(ALL_SHADER_OBJS)
+	@echo Compiled all found shader files
+
+$(SHADER_DST_VERTEX_DIR)/%.spv : $(SHADER_SRC_VERTEX_DIR)/%.vert
+	mkdir -p $(@D)
+	$(VULKAN_BIN_PATH)/glslc$(CXX_EXE_SUFFIX) $< -o $@
+	@echo Compiled Shader $<
+
+$(SHADER_DST_FRAGMENT_DIR)/%.spv : $(SHADER_SRC_FRAGMENT_DIR)/%.frag
+	mkdir -p $(@D)
+	$(VULKAN_BIN_PATH)/glslc$(CXX_EXE_SUFFIX) $< -o $@
+	@echo Compiled Shader $<
 
 
 # # =======================================================
@@ -38,7 +52,7 @@ copy_library_files : $(BAKED_LIB_DIR) $(BAKED_INCLUDE_DIR)
 # Project Clean Recipes
 # =======================================================
 
-build_clean: build_clean_exe build_clean_build build_clean_test build_clean_lib# build_clean_include
+build_clean: build_clean_exe build_clean_build  build_clean_lib build_clean_shaders # build_clean_test build_clean_include
 	$(info Build Clean Successful)
 
 build_clean_exe:
@@ -50,11 +64,14 @@ build_clean_build:
 build_clean_lib:
 	rm -rf $(TOP_PATH)/*.so $(TOP_PATH)/*.a $(TOP_PATH)/*.dll $(TOP_PATH)/*.pdb
 
+build_clean_shaders:
+	rm -rf $(SHADER_DST_DIR)
+
 # build_clean_include:
 # 	rm -rf $(INCLUDE_DIR)
 
-build_clean_test:
-	rm -rf $(TEST_BUILD_DIR)
+# build_clean_test:
+# 	rm -rf $(TEST_BUILD_DIR)
 
 
 # =======================================================

@@ -95,6 +95,12 @@ private:
 	VkPresentModeKHR chooseSwapPresentMode(const std::vector<VkPresentModeKHR>& availablePresentModes);
 	VkExtent2D chooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities);
 
+	// File Loader function TODO: Put into it's own class
+	std::vector<char> readFile(const std::string& filename);
+
+	// Helper function TODO: Move somewhere
+	VkShaderModule createShaderModule(const std::vector<char>& code);
+
 
 	void populateDebugMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT& createInfo);
 	void setupDebugMessenger();

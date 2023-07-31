@@ -15,7 +15,7 @@ public:
 	CustomSdlError() = default;
 	~CustomSdlError() = default;
 
-	static void DisplayError(SDL_MessageBoxFlags messageType, std::string title, std::string message, SDL_Window *window = NULL);
+	static void DisplayError(SDL_MessageBoxFlags messageType, const std::string& title, const std::string& message, SDL_Window *window = NULL);
 };
 
 } // End of namespace BakedEngine

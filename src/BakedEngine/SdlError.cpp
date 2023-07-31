@@ -9,7 +9,7 @@
 namespace BakedEngine
 {
 
-void CustomSdlError::DisplayError(SDL_MessageBoxFlags messageType, std::string title, std::string message, SDL_Window *window)
+void CustomSdlError::DisplayError(SDL_MessageBoxFlags messageType, const std::string& title, const std::string& message, SDL_Window *window)
 {
 	if (messageType != SDL_MessageBoxFlags::SDL_MESSAGEBOX_INFORMATION)
 	{
