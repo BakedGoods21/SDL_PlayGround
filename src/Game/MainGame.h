@@ -14,6 +14,8 @@ public:
 	void stop();
 
 private:
+	void pullEvents();
+
 	bool isRunning = false;
 
 	BakedEngine::Window gameWindow;

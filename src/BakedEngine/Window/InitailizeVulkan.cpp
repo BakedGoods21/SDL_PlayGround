@@ -31,6 +31,7 @@ bool Window::initVulkan()
 	createFrameBuffers();
 	createCommandPool();
 	createCommandBuffer();
+	createSyncObjects();
 
 	return true;
 }

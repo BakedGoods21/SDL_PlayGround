@@ -10,6 +10,12 @@ Window::Window() {}
 
 Window::~Window()
 {
+    vkDeviceWaitIdle(_device);
+
+    vkDestroySemaphore(_device, imageAvailableSemaphore, nullptr);
+    vkDestroySemaphore(_device, renderFinishedSemaphore, nullptr);
+    vkDestroyFence(_device, inFlightFence, nullptr);
+
     vkDestroyCommandPool(_device, commandPool, nullptr);
 
     for (auto framebuffer : swapChainFramebuffers)
@@ -84,6 +90,54 @@ bool Window::initSdl(std::string windowName, int screenWidth, int screenHeight, 
 	}
 
 	return true;
+}
+
+void Window::drawFrame()
+{
+    uint32_t imageIndex;
+    vkAcquireNextImageKHR(_device, _swapChain, UINT64_MAX, imageAvailableSemaphore, VK_NULL_HANDLE, &imageIndex);
+
+    vkWaitForFences(_device, 1, &inFlightFence, VK_TRUE, UINT64_MAX);
+	vkResetFences(_device, 1, &inFlightFence);
+
+	vkResetCommandBuffer(commandBuffer, 0);
+	recordCommandBuffer(commandBuffer, imageIndex);
+
+	VkSubmitInfo submitInfo{};
+	submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
+
+	VkSemaphore waitSemaphores[] = {imageAvailableSemaphore};
+	VkPipelineStageFlags waitStages[] = {VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT};
+	submitInfo.waitSemaphoreCount = 1;
+	submitInfo.pWaitSemaphores = waitSemaphores;
+	submitInfo.pWaitDstStageMask = waitStages;
+
+	submitInfo.commandBufferCount = 1;
+	submitInfo.pCommandBuffers = &commandBuffer;
+
+	VkSemaphore signalSemaphores[] = {renderFinishedSemaphore};
+	submitInfo.signalSemaphoreCount = 1;
+	submitInfo.pSignalSemaphores = signalSemaphores;
+
+	if (vkQueueSubmit(_graphicsQueue, 1, &submitInfo, inFlightFence) != VK_SUCCESS)
+	{
+		CustomSdlError::DisplayError(SDL_MessageBoxFlags::SDL_MESSAGEBOX_ERROR, "Draw Frame Error",  "Failed to submit draw command buffer");
+	}
+
+	VkPresentInfoKHR presentInfo{};
+	presentInfo.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
+
+	presentInfo.waitSemaphoreCount = 1;
+	presentInfo.pWaitSemaphores = signalSemaphores;
+
+	VkSwapchainKHR swapChains[] = {_swapChain};
+	presentInfo.swapchainCount = 1;
+	presentInfo.pSwapchains = swapChains;
+	presentInfo.pImageIndices = &imageIndex;
+
+	presentInfo.pResults = nullptr; // Optional
+
+	vkQueuePresentKHR(_presentQueue, &presentInfo);
 }
 
 

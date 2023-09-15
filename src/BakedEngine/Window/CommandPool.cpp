@@ -17,7 +17,7 @@ void Window::createCommandPool()
 
 	if (vkCreateCommandPool(_device, &poolInfo, nullptr, &commandPool) != VK_SUCCESS)
 	{
-		CustomSdlError::DisplayError(SDL_MessageBoxFlags::SDL_MESSAGEBOX_ERROR, "Create Shader Module", "Failed to create command pool!");
+		CustomSdlError::DisplayError(SDL_MessageBoxFlags::SDL_MESSAGEBOX_ERROR, "Create Command Pool", "Failed to create command pool!");
 	}
 }
 
@@ -31,7 +31,7 @@ void Window::createCommandBuffer()
 
 	if (vkAllocateCommandBuffers(_device, &allocInfo, &commandBuffer) != VK_SUCCESS)
 	{
-		CustomSdlError::DisplayError(SDL_MessageBoxFlags::SDL_MESSAGEBOX_ERROR, "Create Shader Module", "Failed to allocate command buffers!");
+		CustomSdlError::DisplayError(SDL_MessageBoxFlags::SDL_MESSAGEBOX_ERROR, "Create Command Buffer", "Failed to allocate command buffers!");
 	}
 }
 
@@ -44,7 +44,7 @@ void Window::recordCommandBuffer(VkCommandBuffer commandBuffer, uint32_t imageIn
 
 	if (vkBeginCommandBuffer(commandBuffer, &beginInfo) != VK_SUCCESS)
 	{
-		CustomSdlError::DisplayError(SDL_MessageBoxFlags::SDL_MESSAGEBOX_ERROR, "Create Shader Module", "Failed to begin recording command buffer!");
+		CustomSdlError::DisplayError(SDL_MessageBoxFlags::SDL_MESSAGEBOX_ERROR, "Record Command Buffer", "Failed to begin recording command buffer!");
 	}
 
 	VkRenderPassBeginInfo renderPassInfo{};
@@ -83,7 +83,24 @@ void Window::recordCommandBuffer(VkCommandBuffer commandBuffer, uint32_t imageIn
 
 	if (vkEndCommandBuffer(commandBuffer) != VK_SUCCESS)
 	{
-		CustomSdlError::DisplayError(SDL_MessageBoxFlags::SDL_MESSAGEBOX_ERROR, "Create Shader Module", "Failed to record command buffer!");
+		CustomSdlError::DisplayError(SDL_MessageBoxFlags::SDL_MESSAGEBOX_ERROR, "Record Command Buffer", "Failed to record command buffer!");
+	}
+}
+
+void Window::createSyncObjects()
+{
+    VkSemaphoreCreateInfo semaphoreInfo{};
+    semaphoreInfo.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
+
+	VkFenceCreateInfo fenceInfo{};
+	fenceInfo.sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
+    fenceInfo.flags = VK_FENCE_CREATE_SIGNALED_BIT;
+
+	if (vkCreateSemaphore(_device, &semaphoreInfo, nullptr, &imageAvailableSemaphore) != VK_SUCCESS ||
+        vkCreateSemaphore(_device, &semaphoreInfo, nullptr, &renderFinishedSemaphore) != VK_SUCCESS ||
+        vkCreateFence(_device, &fenceInfo, nullptr, &inFlightFence) != VK_SUCCESS)
+	{
+		CustomSdlError::DisplayError(SDL_MessageBoxFlags::SDL_MESSAGEBOX_ERROR, "Create Sync Objects", "Failed to create semaphores!");
 	}
 }
 

@@ -70,9 +70,17 @@ public:
 	bool create(std::string windowName, int screenWidth, int screenHeight, uint32_t currentFlags);
 
 	void swapBuffer();
+	void drawFrame();
 
 	int getScreenWidth() { return _screenWidth; }
 	int getScreenHeight() { return _screenHeight; }
+	const VkDevice& getDevice() { return _device; }
+
+	// Semaphores and Fences
+	VkSemaphore imageAvailableSemaphore;
+	VkSemaphore renderFinishedSemaphore;
+	VkFence inFlightFence;
+
 private:
 
 	bool initSdl(std::string windowName, int screenWidth, int screenHeight, uint32_t currentFlags);
@@ -89,6 +97,7 @@ private:
 	void createFrameBuffers();
 	void createCommandPool();
 	void createCommandBuffer();
+	void createSyncObjects();
 
 	std::vector<const char*> getRequiredExtensions();
 	bool isDeviceSuitable(VkPhysicalDevice device);
@@ -150,7 +159,6 @@ private:
 	// Command Pools
 	VkCommandPool commandPool;
 	VkCommandBuffer commandBuffer;
-
 
 	int _screenWidth;
 	int _screenHeight;

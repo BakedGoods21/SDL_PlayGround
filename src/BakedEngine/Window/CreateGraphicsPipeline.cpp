@@ -56,8 +56,24 @@ void Window::createRenderPass()
 
 	if (vkCreateRenderPass(_device, &renderPassInfo, nullptr, &renderPass) != VK_SUCCESS)
 	{
-		CustomSdlError::DisplayError(SDL_MessageBoxFlags::SDL_MESSAGEBOX_ERROR, "Create Shader Module", "Failed to create render pass!");
+		CustomSdlError::DisplayError(SDL_MessageBoxFlags::SDL_MESSAGEBOX_ERROR, "Create RenderPass", "Failed to create render pass!");
 	}
+
+	VkSubpassDependency dependency{};
+	dependency.srcSubpass = VK_SUBPASS_EXTERNAL;
+	dependency.dstSubpass = 0;
+
+	dependency.srcStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
+	dependency.srcAccessMask = 0;
+
+	dependency.dstStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
+	dependency.dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
+
+	renderPassInfo.dependencyCount = 1;
+	renderPassInfo.pDependencies = &dependency;
+
+	dependency.srcStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
+	dependency.srcAccessMask = 0;
 }
 
 void Window::createGraphicsPipeline()
@@ -184,7 +200,7 @@ void Window::createGraphicsPipeline()
 
 	if (vkCreatePipelineLayout(_device, &pipelineLayoutInfo, nullptr, &pipelineLayout) != VK_SUCCESS)
 	{
-		CustomSdlError::DisplayError(SDL_MessageBoxFlags::SDL_MESSAGEBOX_ERROR, "Create Shader Module", "Failed to create pipeline layout!");
+		CustomSdlError::DisplayError(SDL_MessageBoxFlags::SDL_MESSAGEBOX_ERROR, "Create Graphics Pipeline", "Failed to create pipeline layout!");
 	}
 
 	VkGraphicsPipelineCreateInfo pipelineInfo{};
@@ -211,7 +227,7 @@ void Window::createGraphicsPipeline()
 
 	if (vkCreateGraphicsPipelines(_device, VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &graphicsPipeline) != VK_SUCCESS)
 	{
-		CustomSdlError::DisplayError(SDL_MessageBoxFlags::SDL_MESSAGEBOX_ERROR, "Create Shader Module", "Failed to create graphics pipeline!");
+		CustomSdlError::DisplayError(SDL_MessageBoxFlags::SDL_MESSAGEBOX_ERROR, "Create Graphics Pipeline", "Failed to create graphics pipeline!");
 	}
 
 	vkDestroyShaderModule(_device, fragShaderModule, nullptr);
@@ -239,7 +255,7 @@ void Window::createFrameBuffers()
 
 		if (vkCreateFramebuffer(_device, &framebufferInfo, nullptr, &swapChainFramebuffers[i]) != VK_SUCCESS)
 		{
-			CustomSdlError::DisplayError(SDL_MessageBoxFlags::SDL_MESSAGEBOX_ERROR, "Create Shader Module", "Failed to create framebuffer " + std::to_string(i) + "!");
+			CustomSdlError::DisplayError(SDL_MessageBoxFlags::SDL_MESSAGEBOX_ERROR, "Create Frame Buffer", "Failed to create framebuffer " + std::to_string(i) + "!");
 		}
 	}
 }
