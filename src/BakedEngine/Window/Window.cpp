@@ -10,6 +10,16 @@ Window::Window() {}
 
 Window::~Window()
 {
+    vkDestroyCommandPool(_device, commandPool, nullptr);
+
+    for (auto framebuffer : swapChainFramebuffers)
+	{
+        vkDestroyFramebuffer(_device, framebuffer, nullptr);
+    }
+    vkDestroyPipeline(_device, graphicsPipeline, nullptr);
+    vkDestroyPipelineLayout(_device, pipelineLayout, nullptr);
+    vkDestroyRenderPass(_device, renderPass, nullptr);
+
 	for (auto imageView : swapChainImageViews)
 	{
 		vkDestroyImageView(_device, imageView, nullptr);

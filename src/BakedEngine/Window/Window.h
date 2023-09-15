@@ -84,7 +84,11 @@ private:
 	void pickPhysicalDevice();
 	void createLogicalDevice();
 	void createImageViews();
+	void createRenderPass();
 	void createGraphicsPipeline();
+	void createFrameBuffers();
+	void createCommandPool();
+	void createCommandBuffer();
 
 	std::vector<const char*> getRequiredExtensions();
 	bool isDeviceSuitable(VkPhysicalDevice device);
@@ -111,6 +115,9 @@ private:
 			const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData,
 			void* pUserData);
 
+	// Record command buffer
+	void recordCommandBuffer(VkCommandBuffer commandBuffer, uint32_t imageIndex);
+
 	// SDL Program
 	SDL_Window* _sdlWindow = nullptr;
 
@@ -131,6 +138,18 @@ private:
 
 	// Vulkan Debug
 	VkDebugUtilsMessengerEXT debugMessenger;
+
+	// Shader Pipeline?
+	VkRenderPass renderPass;
+	VkPipelineLayout pipelineLayout;
+	VkPipeline graphicsPipeline;
+
+	// Frame Buffer
+	std::vector<VkFramebuffer> swapChainFramebuffers;
+
+	// Command Pools
+	VkCommandPool commandPool;
+	VkCommandBuffer commandBuffer;
 
 
 	int _screenWidth;

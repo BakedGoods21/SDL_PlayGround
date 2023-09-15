@@ -26,7 +26,11 @@ bool Window::initVulkan()
 	createLogicalDevice();
 	createSwapChain();
 	createImageViews();
+    createRenderPass();
 	createGraphicsPipeline();
+	createFrameBuffers();
+	createCommandPool();
+	createCommandBuffer();
 
 	return true;
 }
