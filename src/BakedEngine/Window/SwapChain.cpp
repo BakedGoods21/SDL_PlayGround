@@ -14,7 +14,7 @@ namespace BakedEngine
 
 void Window::createSwapChain()
 {
-    SwapChainSupportDetails swapChainSupport = querySwapChainSupport(_physicalDevice);
+    SwapChainSupportDetails swapChainSupport = querySwapChainSupport(m_physicalDevice);
 
     VkSurfaceFormatKHR surfaceFormat = chooseSwapSurfaceFormat(swapChainSupport.formats);
     VkPresentModeKHR presentMode = chooseSwapPresentMode(swapChainSupport.presentModes);
@@ -29,7 +29,7 @@ void Window::createSwapChain()
 
 	VkSwapchainCreateInfoKHR createInfo{};
 	createInfo.sType = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;
-	createInfo.surface = _surface;
+	createInfo.surface = m_surface;
 
 	createInfo.minImageCount = imageCount;
 	createInfo.imageFormat = surfaceFormat.format;
@@ -38,7 +38,7 @@ void Window::createSwapChain()
 	createInfo.imageArrayLayers = 1;
 	createInfo.imageUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
 
-	QueueFamilyIndices indices = findQueueFamilies(_physicalDevice);
+	QueueFamilyIndices indices = findQueueFamilies(m_physicalDevice);
 	uint32_t queueFamilyIndices[] = {indices.graphicsFamily.value(), indices.presentFamily.value()};
 
 	if (indices.graphicsFamily != indices.presentFamily)
@@ -60,41 +60,41 @@ void Window::createSwapChain()
 	createInfo.clipped = VK_TRUE;
 	createInfo.oldSwapchain = VK_NULL_HANDLE;
 
-	if (vkCreateSwapchainKHR(_device, &createInfo, nullptr, &_swapChain) != VK_SUCCESS)
+	if (vkCreateSwapchainKHR(m_device, &createInfo, nullptr, &m_swapChain) != VK_SUCCESS)
 	{
 		CustomSdlError::DisplayError(SDL_MessageBoxFlags::SDL_MESSAGEBOX_INFORMATION, "Vulkan SwapChain Initialization Error",  "Failed to create swap chain!");
 	}
 
-	vkGetSwapchainImagesKHR(_device, _swapChain, &imageCount, nullptr);
-	swapChainImages.resize(imageCount);
-	vkGetSwapchainImagesKHR(_device, _swapChain, &imageCount, swapChainImages.data());
+	vkGetSwapchainImagesKHR(m_device, m_swapChain, &imageCount, nullptr);
+	m_swapChainImages.resize(imageCount);
+	vkGetSwapchainImagesKHR(m_device, m_swapChain, &imageCount, m_swapChainImages.data());
 
-	swapChainImageFormat = surfaceFormat.format;
-	swapChainExtent = extent;
+	m_swapChainImageFormat = surfaceFormat.format;
+	m_swapChainExtent = extent;
 }
 
 SwapChainSupportDetails Window::querySwapChainSupport(VkPhysicalDevice device)
 {
 	SwapChainSupportDetails details;
 
-	vkGetPhysicalDeviceSurfaceCapabilitiesKHR(device, _surface, &details.capabilities);
+	vkGetPhysicalDeviceSurfaceCapabilitiesKHR(device, m_surface, &details.capabilities);
 
 	uint32_t formatCount;
-	vkGetPhysicalDeviceSurfaceFormatsKHR(device, _surface, &formatCount, nullptr);
+	vkGetPhysicalDeviceSurfaceFormatsKHR(device, m_surface, &formatCount, nullptr);
 
 	if (formatCount != 0)
 	{
 		details.formats.resize(formatCount);
-		vkGetPhysicalDeviceSurfaceFormatsKHR(device, _surface, &formatCount, details.formats.data());
+		vkGetPhysicalDeviceSurfaceFormatsKHR(device, m_surface, &formatCount, details.formats.data());
 	}
 
 	uint32_t presentModeCount;
-	vkGetPhysicalDeviceSurfacePresentModesKHR(device, _surface, &presentModeCount, nullptr);
+	vkGetPhysicalDeviceSurfacePresentModesKHR(device, m_surface, &presentModeCount, nullptr);
 
 	if (presentModeCount != 0)
 	{
 		details.presentModes.resize(presentModeCount);
-		vkGetPhysicalDeviceSurfacePresentModesKHR(device, _surface, &presentModeCount, details.presentModes.data());
+		vkGetPhysicalDeviceSurfacePresentModesKHR(device, m_surface, &presentModeCount, details.presentModes.data());
 	}
 
 	return details;
@@ -133,7 +133,7 @@ VkExtent2D Window::chooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities
 	else
 	{
         int width, height;
-		SDL_Vulkan_GetDrawableSize(_sdlWindow, &width, &height);
+		SDL_Vulkan_GetDrawableSize(m_sdlWindow, &width, &height);
 
         VkExtent2D actualExtent = {
             static_cast<uint32_t>(width),

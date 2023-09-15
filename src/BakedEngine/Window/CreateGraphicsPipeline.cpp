@@ -14,7 +14,7 @@ VkShaderModule Window::createShaderModule(const std::vector<char>& code)
 	createInfo.pCode = reinterpret_cast<const uint32_t*>(code.data());
 
 	VkShaderModule shaderModule;
-	if (vkCreateShaderModule(_device, &createInfo, nullptr, &shaderModule) != VK_SUCCESS)
+	if (vkCreateShaderModule(m_device, &createInfo, nullptr, &shaderModule) != VK_SUCCESS)
 	{
 		CustomSdlError::DisplayError(SDL_MessageBoxFlags::SDL_MESSAGEBOX_ERROR, "Create Shader Module", "Failed to create shader module!");
 	}
@@ -25,7 +25,7 @@ VkShaderModule Window::createShaderModule(const std::vector<char>& code)
 void Window::createRenderPass()
 {
     VkAttachmentDescription colorAttachment{};
-    colorAttachment.format = swapChainImageFormat;
+    colorAttachment.format = m_swapChainImageFormat;
     colorAttachment.samples = VK_SAMPLE_COUNT_1_BIT;
 
 	colorAttachment.loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
@@ -54,7 +54,7 @@ void Window::createRenderPass()
 	renderPassInfo.subpassCount = 1;
 	renderPassInfo.pSubpasses = &subpass;
 
-	if (vkCreateRenderPass(_device, &renderPassInfo, nullptr, &renderPass) != VK_SUCCESS)
+	if (vkCreateRenderPass(m_device, &renderPassInfo, nullptr, &m_renderPass) != VK_SUCCESS)
 	{
 		CustomSdlError::DisplayError(SDL_MessageBoxFlags::SDL_MESSAGEBOX_ERROR, "Create RenderPass", "Failed to create render pass!");
 	}
@@ -113,14 +113,14 @@ void Window::createGraphicsPipeline()
 	// VkViewport viewport{};
 	// viewport.x = 0.0f;
 	// viewport.y = 0.0f;
-	// viewport.width = (float) swapChainExtent.width;
-	// viewport.height = (float) swapChainExtent.height;
+	// viewport.width = (float) m_swapChainExtent.width;
+	// viewport.height = (float) m_swapChainExtent.height;
 	// viewport.minDepth = 0.0f;
 	// viewport.maxDepth = 1.0f;
 
 	VkRect2D scissor{};
 	scissor.offset = {0, 0};
-	scissor.extent = swapChainExtent;
+	scissor.extent = m_swapChainExtent;
 
 	std::vector<VkDynamicState> dynamicStates = {
 		VK_DYNAMIC_STATE_VIEWPORT,
@@ -198,7 +198,7 @@ void Window::createGraphicsPipeline()
 	pipelineLayoutInfo.pushConstantRangeCount = 0; // Optional
 	pipelineLayoutInfo.pPushConstantRanges = nullptr; // Optional
 
-	if (vkCreatePipelineLayout(_device, &pipelineLayoutInfo, nullptr, &pipelineLayout) != VK_SUCCESS)
+	if (vkCreatePipelineLayout(m_device, &pipelineLayoutInfo, nullptr, &m_pipelineLayout) != VK_SUCCESS)
 	{
 		CustomSdlError::DisplayError(SDL_MessageBoxFlags::SDL_MESSAGEBOX_ERROR, "Create Graphics Pipeline", "Failed to create pipeline layout!");
 	}
@@ -217,43 +217,43 @@ void Window::createGraphicsPipeline()
 	pipelineInfo.pColorBlendState = &colorBlending;
 	pipelineInfo.pDynamicState = &dynamicState;
 
-	pipelineInfo.layout = pipelineLayout;
+	pipelineInfo.layout = m_pipelineLayout;
 
-	pipelineInfo.renderPass = renderPass;
+	pipelineInfo.renderPass = m_renderPass;
 	pipelineInfo.subpass = 0;
 
 	pipelineInfo.basePipelineHandle = VK_NULL_HANDLE; // Optional
 	pipelineInfo.basePipelineIndex = -1; // Optional
 
-	if (vkCreateGraphicsPipelines(_device, VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &graphicsPipeline) != VK_SUCCESS)
+	if (vkCreateGraphicsPipelines(m_device, VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &m_graphicsPipeline) != VK_SUCCESS)
 	{
 		CustomSdlError::DisplayError(SDL_MessageBoxFlags::SDL_MESSAGEBOX_ERROR, "Create Graphics Pipeline", "Failed to create graphics pipeline!");
 	}
 
-	vkDestroyShaderModule(_device, fragShaderModule, nullptr);
-	vkDestroyShaderModule(_device, vertShaderModule, nullptr);
+	vkDestroyShaderModule(m_device, fragShaderModule, nullptr);
+	vkDestroyShaderModule(m_device, vertShaderModule, nullptr);
 }
 
 void Window::createFrameBuffers()
 {
-    swapChainFramebuffers.resize(swapChainImageViews.size());
+    m_swapChainFramebuffers.resize(m_swapChainImageViews.size());
 
-	for (size_t i = 0; i < swapChainImageViews.size(); i++)
+	for (size_t i = 0; i < m_swapChainImageViews.size(); i++)
 	{
     	VkImageView attachments[] = {
-			swapChainImageViews[i]
+			m_swapChainImageViews[i]
 		};
 
 		VkFramebufferCreateInfo framebufferInfo{};
 		framebufferInfo.sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
-		framebufferInfo.renderPass = renderPass;
+		framebufferInfo.renderPass = m_renderPass;
 		framebufferInfo.attachmentCount = 1;
 		framebufferInfo.pAttachments = attachments;
-		framebufferInfo.width = swapChainExtent.width;
-		framebufferInfo.height = swapChainExtent.height;
+		framebufferInfo.width = m_swapChainExtent.width;
+		framebufferInfo.height = m_swapChainExtent.height;
 		framebufferInfo.layers = 1;
 
-		if (vkCreateFramebuffer(_device, &framebufferInfo, nullptr, &swapChainFramebuffers[i]) != VK_SUCCESS)
+		if (vkCreateFramebuffer(m_device, &framebufferInfo, nullptr, &m_swapChainFramebuffers[i]) != VK_SUCCESS)
 		{
 			CustomSdlError::DisplayError(SDL_MessageBoxFlags::SDL_MESSAGEBOX_ERROR, "Create Frame Buffer", "Failed to create framebuffer " + std::to_string(i) + "!");
 		}

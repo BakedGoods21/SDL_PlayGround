@@ -10,41 +10,41 @@ Window::Window() {}
 
 Window::~Window()
 {
-    vkDeviceWaitIdle(_device);
+    vkDeviceWaitIdle(m_device);
 
-    vkDestroySemaphore(_device, imageAvailableSemaphore, nullptr);
-    vkDestroySemaphore(_device, renderFinishedSemaphore, nullptr);
-    vkDestroyFence(_device, inFlightFence, nullptr);
+    vkDestroySemaphore(m_device, m_imageAvailableSemaphore, nullptr);
+    vkDestroySemaphore(m_device, m_renderFinishedSemaphore, nullptr);
+    vkDestroyFence(m_device, m_inFlightFence, nullptr);
 
-    vkDestroyCommandPool(_device, commandPool, nullptr);
+    vkDestroyCommandPool(m_device, m_commandPool, nullptr);
 
-    for (auto framebuffer : swapChainFramebuffers)
+    for (auto framebuffer : m_swapChainFramebuffers)
 	{
-        vkDestroyFramebuffer(_device, framebuffer, nullptr);
+        vkDestroyFramebuffer(m_device, framebuffer, nullptr);
     }
-    vkDestroyPipeline(_device, graphicsPipeline, nullptr);
-    vkDestroyPipelineLayout(_device, pipelineLayout, nullptr);
-    vkDestroyRenderPass(_device, renderPass, nullptr);
+    vkDestroyPipeline(m_device, m_graphicsPipeline, nullptr);
+    vkDestroyPipelineLayout(m_device, m_pipelineLayout, nullptr);
+    vkDestroyRenderPass(m_device, m_renderPass, nullptr);
 
-	for (auto imageView : swapChainImageViews)
+	for (auto imageView : m_swapChainImageViews)
 	{
-		vkDestroyImageView(_device, imageView, nullptr);
+		vkDestroyImageView(m_device, imageView, nullptr);
 	}
 
-	vkDestroySwapchainKHR(_device, _swapChain, nullptr);
-	vkDestroyDevice(_device, nullptr);
+	vkDestroySwapchainKHR(m_device, m_swapChain, nullptr);
+	vkDestroyDevice(m_device, nullptr);
 
     if (enableValidationLayers) {
-        DestroyDebugUtilsMessengerEXT(_instance, debugMessenger, nullptr);
+        DestroyDebugUtilsMessengerEXT(m_instance, m_debugMessenger, nullptr);
     }
 
-	vkDestroySurfaceKHR(_instance, _surface, nullptr);
-    vkDestroyInstance(_instance, nullptr);
+	vkDestroySurfaceKHR(m_instance, m_surface, nullptr);
+    vkDestroyInstance(m_instance, nullptr);
 
 	// Destroy window
-	if (_sdlWindow)
+	if (m_sdlWindow)
 	{
-		SDL_DestroyWindow( _sdlWindow );
+		SDL_DestroyWindow( m_sdlWindow );
 	}
 
 	SDL_Quit();
@@ -76,14 +76,14 @@ bool Window::initSdl(std::string windowName, int screenWidth, int screenHeight, 
 	}
 
 	// Destroy window if there is one already
-	if (_sdlWindow)
+	if (m_sdlWindow)
 	{
-		SDL_DestroyWindow( _sdlWindow );
+		SDL_DestroyWindow( m_sdlWindow );
 	}
 
 	// Create window
-	_sdlWindow = SDL_CreateWindow(windowName.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, screenWidth, screenHeight, flags);
-	if (_sdlWindow == NULL)
+	m_sdlWindow = SDL_CreateWindow(windowName.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, screenWidth, screenHeight, flags);
+	if (m_sdlWindow == NULL)
 	{
 		CustomSdlError::DisplayError(SDL_MessageBoxFlags::SDL_MESSAGEBOX_ERROR, "SDL_ERROR",  "Could not Create SDL Window");
 		return false;
@@ -95,31 +95,31 @@ bool Window::initSdl(std::string windowName, int screenWidth, int screenHeight, 
 void Window::drawFrame()
 {
     uint32_t imageIndex;
-    vkAcquireNextImageKHR(_device, _swapChain, UINT64_MAX, imageAvailableSemaphore, VK_NULL_HANDLE, &imageIndex);
+    vkAcquireNextImageKHR(m_device, m_swapChain, UINT64_MAX, m_imageAvailableSemaphore, VK_NULL_HANDLE, &imageIndex);
 
-    vkWaitForFences(_device, 1, &inFlightFence, VK_TRUE, UINT64_MAX);
-	vkResetFences(_device, 1, &inFlightFence);
+    vkWaitForFences(m_device, 1, &m_inFlightFence, VK_TRUE, UINT64_MAX);
+	vkResetFences(m_device, 1, &m_inFlightFence);
 
-	vkResetCommandBuffer(commandBuffer, 0);
-	recordCommandBuffer(commandBuffer, imageIndex);
+	vkResetCommandBuffer(m_commandBuffer, 0);
+	recordCommandBuffer(m_commandBuffer, imageIndex);
 
 	VkSubmitInfo submitInfo{};
 	submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
 
-	VkSemaphore waitSemaphores[] = {imageAvailableSemaphore};
+	VkSemaphore waitSemaphores[] = {m_imageAvailableSemaphore};
 	VkPipelineStageFlags waitStages[] = {VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT};
 	submitInfo.waitSemaphoreCount = 1;
 	submitInfo.pWaitSemaphores = waitSemaphores;
 	submitInfo.pWaitDstStageMask = waitStages;
 
 	submitInfo.commandBufferCount = 1;
-	submitInfo.pCommandBuffers = &commandBuffer;
+	submitInfo.pCommandBuffers = &m_commandBuffer;
 
-	VkSemaphore signalSemaphores[] = {renderFinishedSemaphore};
+	VkSemaphore signalSemaphores[] = {m_renderFinishedSemaphore};
 	submitInfo.signalSemaphoreCount = 1;
 	submitInfo.pSignalSemaphores = signalSemaphores;
 
-	if (vkQueueSubmit(_graphicsQueue, 1, &submitInfo, inFlightFence) != VK_SUCCESS)
+	if (vkQueueSubmit(m_graphicsQueue, 1, &submitInfo, m_inFlightFence) != VK_SUCCESS)
 	{
 		CustomSdlError::DisplayError(SDL_MessageBoxFlags::SDL_MESSAGEBOX_ERROR, "Draw Frame Error",  "Failed to submit draw command buffer");
 	}
@@ -130,14 +130,14 @@ void Window::drawFrame()
 	presentInfo.waitSemaphoreCount = 1;
 	presentInfo.pWaitSemaphores = signalSemaphores;
 
-	VkSwapchainKHR swapChains[] = {_swapChain};
+	VkSwapchainKHR swapChains[] = {m_swapChain};
 	presentInfo.swapchainCount = 1;
 	presentInfo.pSwapchains = swapChains;
 	presentInfo.pImageIndices = &imageIndex;
 
 	presentInfo.pResults = nullptr; // Optional
 
-	vkQueuePresentKHR(_presentQueue, &presentInfo);
+	vkQueuePresentKHR(m_presentQueue, &presentInfo);
 }
 
 

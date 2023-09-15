@@ -3,7 +3,7 @@
 namespace BakedEngine
 {
 
-InputManager::InputManager() : _mouseCoords(0.0f)
+InputManager::InputManager() : m_mouseCoords(0.0f)
 {
 
 }
@@ -16,32 +16,32 @@ InputManager::~InputManager()
 void InputManager::update()
 {
 	// Loop through keymap using a for each loop and copy it over to _previousKeyMap
-	for (auto& it : _keymap)
+	for (auto& it : m_keymap)
 	{
-		_previousKeymap[it.first] = it.second;
+		m_previousKeymap[it.first] = it.second;
 	}
 }
 
 void InputManager::pressKey(unsigned int keyID)
 {
-	_keymap[keyID] = true;
+	m_keymap[keyID] = true;
 }
 
 void InputManager::releaseKey(unsigned int keyID)
 {
-	_keymap[keyID] = false;
+	m_keymap[keyID] = false;
 }
 
 void InputManager::setMouseCoords(float x, float y)
 {
-	_mouseCoords.x = x;
-	_mouseCoords.y = y;
+	m_mouseCoords.x = x;
+	m_mouseCoords.y = y;
 }
 
 bool InputManager::isKeyDown(unsigned int keyID)
 {
-	auto it = _keymap.find(keyID);
-	if (it != _keymap.end())
+	auto it = m_keymap.find(keyID);
+	if (it != m_keymap.end())
 	{
 		return it->second;
 	}
@@ -65,8 +65,8 @@ bool InputManager::isKeyPressed(unsigned int keyID)
 // Returns true if if the key was just pressed
 bool InputManager::wasKeyPressed(unsigned int keyID)
 {
-	auto it = _previousKeymap.find(keyID);
-	if (it != _previousKeymap.end())
+	auto it = m_previousKeymap.find(keyID);
+	if (it != m_previousKeymap.end())
 	{
 		return it->second;
 	}

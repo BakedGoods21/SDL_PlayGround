@@ -99,7 +99,7 @@ void Window::createInstance()
         createInfo.pNext = nullptr;
 	}
 
-	if (vkCreateInstance(&createInfo, nullptr, &_instance) != VK_SUCCESS)
+	if (vkCreateInstance(&createInfo, nullptr, &m_instance) != VK_SUCCESS)
 	{
 		CustomSdlError::DisplayError(SDL_MessageBoxFlags::SDL_MESSAGEBOX_ERROR, "Vulkan Initialization Error",  "Failed to create instance!");
 	}
@@ -107,7 +107,7 @@ void Window::createInstance()
 
 void Window::createSurface()
 {
-	if (!SDL_Vulkan_CreateSurface(_sdlWindow, _instance, &_surface))
+	if (!SDL_Vulkan_CreateSurface(m_sdlWindow, m_instance, &m_surface))
 	{
 		CustomSdlError::DisplayError(SDL_MessageBoxFlags::SDL_MESSAGEBOX_ERROR, "Vulkan Initialization Error",  "Failed to create Window Surface!");
 	}
@@ -135,7 +135,7 @@ QueueFamilyIndices Window::findQueueFamilies(VkPhysicalDevice device)
 		}
 
 		VkBool32 presentSupport = false;
-		vkGetPhysicalDeviceSurfaceSupportKHR(device, i, _surface, &presentSupport);
+		vkGetPhysicalDeviceSurfaceSupportKHR(device, i, m_surface, &presentSupport);
 
 		if (presentSupport)
 		{
@@ -155,7 +155,7 @@ std::vector<const char*> Window::getRequiredExtensions()
 {
 	uint32_t sdlExtensionCount = 0;
 
-	if (!SDL_Vulkan_GetInstanceExtensions(_sdlWindow, &sdlExtensionCount, nullptr))
+	if (!SDL_Vulkan_GetInstanceExtensions(m_sdlWindow, &sdlExtensionCount, nullptr))
 	{
 		CustomSdlError::DisplayError(SDL_MessageBoxFlags::SDL_MESSAGEBOX_ERROR, "SDL Vulkan Initialization Error",  "Failed to get instance extension count!");
 	}
@@ -163,7 +163,7 @@ std::vector<const char*> Window::getRequiredExtensions()
 
 	std::vector<const char *> sdlExtensions(sdlExtensionCount);
 
-	if (!SDL_Vulkan_GetInstanceExtensions(_sdlWindow, &sdlExtensionCount, sdlExtensions.data()))
+	if (!SDL_Vulkan_GetInstanceExtensions(m_sdlWindow, &sdlExtensionCount, sdlExtensions.data()))
 	{
 		CustomSdlError::DisplayError(SDL_MessageBoxFlags::SDL_MESSAGEBOX_ERROR, "SDL Vulkan Initialization Error",  "Failed to get instance extensions!");
 	}

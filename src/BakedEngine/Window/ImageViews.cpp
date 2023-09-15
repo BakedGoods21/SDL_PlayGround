@@ -14,15 +14,15 @@ namespace BakedEngine
 
 void Window::createImageViews()
 {
-	swapChainImageViews.resize(swapChainImages.size());
+	m_swapChainImageViews.resize(m_swapChainImages.size());
 
-	for (size_t i = 0; i < swapChainImages.size(); i++)
+	for (size_t i = 0; i < m_swapChainImages.size(); i++)
 	{
 		VkImageViewCreateInfo createInfo{};
 		createInfo.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
-		createInfo.image = swapChainImages[i];
+		createInfo.image = m_swapChainImages[i];
 		createInfo.viewType = VK_IMAGE_VIEW_TYPE_2D;
-		createInfo.format = swapChainImageFormat;
+		createInfo.format = m_swapChainImageFormat;
 
 		createInfo.components.r = VK_COMPONENT_SWIZZLE_IDENTITY;
 		createInfo.components.b = VK_COMPONENT_SWIZZLE_IDENTITY;
@@ -34,7 +34,7 @@ void Window::createImageViews()
 		createInfo.subresourceRange.levelCount = 1;
 		createInfo.subresourceRange.baseArrayLayer = 0;
 		createInfo.subresourceRange.layerCount = 1;
-		if (vkCreateImageView(_device, &createInfo, nullptr, &swapChainImageViews[i]) != VK_SUCCESS)
+		if (vkCreateImageView(m_device, &createInfo, nullptr, &m_swapChainImageViews[i]) != VK_SUCCESS)
 		{
 			CustomSdlError::DisplayError(SDL_MessageBoxFlags::SDL_MESSAGEBOX_ERROR, "Vulkan Image Creation Initialization Error",  "Failed to create image views!");
 		}

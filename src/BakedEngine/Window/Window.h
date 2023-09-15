@@ -30,7 +30,7 @@ const std::vector<const char*> deviceExtensions = {
 #endif
 
 extern VkResult CreateDebugUtilsMessengerEXT(VkInstance instance, const VkDebugUtilsMessengerCreateInfoEXT* pCreateInfo, const VkAllocationCallbacks* pAllocator, VkDebugUtilsMessengerEXT* pDebugMessenger);
-extern void DestroyDebugUtilsMessengerEXT(VkInstance instance, VkDebugUtilsMessengerEXT debugMessenger, const VkAllocationCallbacks* pAllocator);
+extern void DestroyDebugUtilsMessengerEXT(VkInstance instance, VkDebugUtilsMessengerEXT m_debugMessenger, const VkAllocationCallbacks* pAllocator);
 
 
 
@@ -72,14 +72,13 @@ public:
 	void swapBuffer();
 	void drawFrame();
 
-	int getScreenWidth() { return _screenWidth; }
-	int getScreenHeight() { return _screenHeight; }
-	const VkDevice& getDevice() { return _device; }
+	int getScreenWidth() { return m_screenWidth; }
+	int getScreenHeight() { return m_screenHeight; }
 
 	// Semaphores and Fences
-	VkSemaphore imageAvailableSemaphore;
-	VkSemaphore renderFinishedSemaphore;
-	VkFence inFlightFence;
+	VkSemaphore m_imageAvailableSemaphore;
+	VkSemaphore m_renderFinishedSemaphore;
+	VkFence m_inFlightFence;
 
 private:
 
@@ -125,43 +124,43 @@ private:
 			void* pUserData);
 
 	// Record command buffer
-	void recordCommandBuffer(VkCommandBuffer commandBuffer, uint32_t imageIndex);
+	void recordCommandBuffer(VkCommandBuffer m_commandBuffer, uint32_t imageIndex);
 
 	// SDL Program
-	SDL_Window* _sdlWindow = nullptr;
+	SDL_Window* m_sdlWindow = nullptr;
 
 	// Vulkan Instance
-	VkInstance _instance;
-	VkSurfaceKHR _surface;
-	VkPhysicalDevice _physicalDevice = VK_NULL_HANDLE;
-	VkDevice _device;
-	VkQueue _graphicsQueue;
-	VkQueue _presentQueue;
-	VkSwapchainKHR _swapChain;
-	std::vector<VkImage> swapChainImages;
-	VkFormat swapChainImageFormat;
-	VkExtent2D swapChainExtent;
+	VkInstance m_instance;
+	VkSurfaceKHR m_surface;
+	VkPhysicalDevice m_physicalDevice = VK_NULL_HANDLE;
+	VkDevice m_device;
+	VkQueue m_graphicsQueue;
+	VkQueue m_presentQueue;
+	VkSwapchainKHR m_swapChain;
+	std::vector<VkImage> m_swapChainImages;
+	VkFormat m_swapChainImageFormat;
+	VkExtent2D m_swapChainExtent;
 
 	// Image Views
-	std::vector<VkImageView> swapChainImageViews;
+	std::vector<VkImageView> m_swapChainImageViews;
 
 	// Vulkan Debug
-	VkDebugUtilsMessengerEXT debugMessenger;
+	VkDebugUtilsMessengerEXT m_debugMessenger;
 
 	// Shader Pipeline?
-	VkRenderPass renderPass;
-	VkPipelineLayout pipelineLayout;
-	VkPipeline graphicsPipeline;
+	VkRenderPass m_renderPass;
+	VkPipelineLayout m_pipelineLayout;
+	VkPipeline m_graphicsPipeline;
 
 	// Frame Buffer
-	std::vector<VkFramebuffer> swapChainFramebuffers;
+	std::vector<VkFramebuffer> m_swapChainFramebuffers;
 
 	// Command Pools
-	VkCommandPool commandPool;
-	VkCommandBuffer commandBuffer;
+	VkCommandPool m_commandPool;
+	VkCommandBuffer m_commandBuffer;
 
-	int _screenWidth;
-	int _screenHeight;
+	int m_screenWidth;
+	int m_screenHeight;
 };
 
 } // End of namespace BakedEngine

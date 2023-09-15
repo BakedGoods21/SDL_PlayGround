@@ -18,20 +18,20 @@ MainGame::MainGame()
 		BakedEngine::CustomSdlError::DisplayError(SDL_MessageBoxFlags::SDL_MESSAGEBOX_ERROR, "Main Game Init", "Could not initialize SDL", nullptr);
 	}
 
-	if (!gameWindow.create("Test Window", 480, 480, 0))
+	if (!m_gameWindow.create("Test Window", 480, 480, 0))
 	{
-		BakedEngine::CustomSdlError::DisplayError(SDL_MessageBoxFlags::SDL_MESSAGEBOX_ERROR, "Main Game Init", "Could not initialize gameWindow", nullptr);
+		BakedEngine::CustomSdlError::DisplayError(SDL_MessageBoxFlags::SDL_MESSAGEBOX_ERROR, "Main Game Init", "Could not initialize m_gameWindow", nullptr);
 	}
 
-	isRunning = true;
+	m_isRunning = true;
 }
 
 void MainGame::run()
 {
-	while (isRunning)
+	while (m_isRunning)
 	{
 		pullEvents();
-		gameWindow.drawFrame();
+		m_gameWindow.drawFrame();
 	}
 
 	// SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_WARNING, "Test" , "This is a test Window using SDL2", nullptr);
@@ -47,7 +47,7 @@ void MainGame::pullEvents()
 		switch (evnt.type)
 		{
 			case SDL_QUIT:
-				isRunning = false;
+				m_isRunning = false;
 				// std::cerr << "SDLQuit" << std::endl;
 				break;
 			case SDL_KEYDOWN:
@@ -76,5 +76,5 @@ void MainGame::pullEvents()
 
 void MainGame::stop()
 {
-	isRunning = false;
+	m_isRunning = false;
 }

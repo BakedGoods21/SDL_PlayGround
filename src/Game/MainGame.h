@@ -16,9 +16,9 @@ public:
 private:
 	void pullEvents();
 
-	bool isRunning = false;
+	bool m_isRunning = false;
 
-	BakedEngine::Window gameWindow;
+	BakedEngine::Window m_gameWindow;
 
 	// Input Manager
 	BakedEngine::InputManager m_inputManager;

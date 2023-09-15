@@ -12,7 +12,7 @@ namespace BakedEngine
 void Window::pickPhysicalDevice()
 {
 	uint32_t deviceCount = 0;
-	vkEnumeratePhysicalDevices(_instance, &deviceCount, nullptr);
+	vkEnumeratePhysicalDevices(m_instance, &deviceCount, nullptr);
 
 	if (deviceCount == 0)
 	{
@@ -20,18 +20,18 @@ void Window::pickPhysicalDevice()
 	}
 
 	std::vector<VkPhysicalDevice> devices(deviceCount);
-	vkEnumeratePhysicalDevices(_instance, &deviceCount, devices.data());
+	vkEnumeratePhysicalDevices(m_instance, &deviceCount, devices.data());
 
 	for (const auto& device : devices)
 	{
 		if (isDeviceSuitable(device))
 		{
-			_physicalDevice = device;
+			m_physicalDevice = device;
 			break;
 		}
 	}
 
-	if (_physicalDevice == VK_NULL_HANDLE)
+	if (m_physicalDevice == VK_NULL_HANDLE)
 	{
 		CustomSdlError::DisplayError(SDL_MessageBoxFlags::SDL_MESSAGEBOX_ERROR, "Vulkan Initialization Error",  "Failed to find a suitable GPU!");
 	}

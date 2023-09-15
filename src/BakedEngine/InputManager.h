@@ -29,12 +29,12 @@ public:
 	bool isKeyPressed(unsigned int keyID);
 
 	// Getters
-	glm::vec2 getMouseCoords() const { return _mouseCoords; }
+	glm::vec2 getMouseCoords() const { return m_mouseCoords; }
 
 private:
-	std::unordered_map<unsigned int, bool> _keymap;
-	std::unordered_map<unsigned int, bool> _previousKeymap;
-	glm::vec2 _mouseCoords;
+	std::unordered_map<unsigned int, bool> m_keymap;
+	std::unordered_map<unsigned int, bool> m_previousKeymap;
+	glm::vec2 m_mouseCoords;
 
 	bool wasKeyPressed(unsigned int keyID);
 

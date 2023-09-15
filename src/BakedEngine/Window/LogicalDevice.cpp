@@ -10,7 +10,7 @@ namespace BakedEngine
 
 void Window::createLogicalDevice()
 {
-	QueueFamilyIndices indices = findQueueFamilies(_physicalDevice);
+	QueueFamilyIndices indices = findQueueFamilies(m_physicalDevice);
 
 	std::vector<VkDeviceQueueCreateInfo> queueCreateInfos;
     std::set<uint32_t> uniqueQueueFamilies = {indices.graphicsFamily.value(), indices.presentFamily.value()};
@@ -57,12 +57,12 @@ void Window::createLogicalDevice()
 		createInfo.enabledLayerCount = 0;
 	}
 
-	if (vkCreateDevice(_physicalDevice, &createInfo, nullptr, &_device) != VK_SUCCESS)
+	if (vkCreateDevice(m_physicalDevice, &createInfo, nullptr, &m_device) != VK_SUCCESS)
 	{
 		CustomSdlError::DisplayError(SDL_MessageBoxFlags::SDL_MESSAGEBOX_INFORMATION, "Vulkan Initialization Error",  "Failed to create logical device!");
 	}
-	vkGetDeviceQueue(_device, indices.graphicsFamily.value(), 0, &_graphicsQueue);
-	vkGetDeviceQueue(_device, indices.presentFamily.value(), 0, &_presentQueue);
+	vkGetDeviceQueue(m_device, indices.graphicsFamily.value(), 0, &m_graphicsQueue);
+	vkGetDeviceQueue(m_device, indices.presentFamily.value(), 0, &m_presentQueue);
 }
 
 } // End of namespace BakedEngine
