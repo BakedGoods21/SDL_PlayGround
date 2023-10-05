@@ -1,0 +1,3 @@
+[submodule "BakedEngine3rdPartyLibs"]
+	path = BakedEngine3rdPartyLibs
+	url = git@github.com:BakedGoods21/BakedEngine3rdPartyLibs.git

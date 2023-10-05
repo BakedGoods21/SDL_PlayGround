@@ -39,7 +39,6 @@ ALL_SHADER_OBJS := $(VERTEX_SHADER_OBJS) $(FRAGMENT_SHADER_OBJS)
 
 # Libraries to add to the include
 LIB_INCLUDES := -I$(SDL_INCLUDE_PATH) \
-			    -I$(SDL2_INCLUDE_MIXER_PATH) \
                	-I$(GLM_INCLUDE_PATH) \
 				-I$(VULKAN_INCLUDE_PATH) \
 				-I$(SRC_DIR)

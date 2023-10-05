@@ -32,16 +32,12 @@ LIB_PATH :=$(3RD_PARTY_LIB_DIR)/windows
 # =======================================================
 
 SDL_VERSION := SDL2-2.26.5
-SDL_PATH := $(LIB_PATH)/$(SDL_VERSION)
-SDL_INCLUDE_PATH := $(SDL_PATH)/include
+SDL_PATH := $(LIB_PATH)/$(SDL_VERSION)/build-install
+SDL_INCLUDE_PATH := $(SDL_PATH)/include/SDL2
 
 GLM_VERSION := glm-0.9.9.8
 GLM_PATH := $(LIB_PATH)/$(GLM_VERSION)
 GLM_INCLUDE_PATH := $(GLM_PATH)
-
-SDL_MIXER_VERSION := SDL2_mixer-2.6.3
-SDL2_MIXER_PATH := $(LIB_PATH)/$(SDL_MIXER_VERSION)
-SDL2_INCLUDE_MIXER_PATH := $(SDL2_MIXER_PATH)/include
 
 VULKAN_VERSION := VulkanSDK-1.3.250.1
 VULKAN_PATH := $(LIB_PATH)/$(VULKAN_VERSION)
@@ -52,11 +48,9 @@ LIB_PATHS := #-L$(SDL_PATH)/lib/x64 \
 			#  -L$(SDL2_MIXER_PATH)/lib/x64 \
 #			   -L$(VULKAN_PATH)/lib
 
-LIB_FLAGS := $(SDL_PATH)/lib/x64/SDL2.lib \
-			 $(SDL2_MIXER_PATH)/lib/x64/SDL2_mixer.lib \
+LIB_FLAGS := $(SDL_PATH)/lib/SDL2.lib \
 			 $(VULKAN_PATH)/lib/vulkan-1.lib \
 			 OpenGL32.lib
 
-LIBRARY_DEPENDENCIES := $(SDL_PATH)/lib/x64/SDL2.dll \
-						$(SDL2_MIXER_PATH)/lib/x64/SDL2_mixer.dll
+LIBRARY_DEPENDENCIES := $(SDL_PATH)/bin/SDL2.dll \
 #						 $(VULKAN_PATH)/bin/
