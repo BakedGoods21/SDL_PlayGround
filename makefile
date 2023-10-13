@@ -43,7 +43,7 @@ include $(BUILD_TOOLS_DIR)/build_config.mk
 
 .PHONY: all clean printvars help build_all build \
         copy_library_files build_clean build_clean_exe \
-		build_clean_build build_clean_lib build_clean_test
+		build_clean_build clean_external build_clean_lib build_clean_test
 #		$(ALL_SHADER_OBJS)
 
 ifndef VERBOSE
@@ -134,6 +134,8 @@ help :
 	    all (default)    Build executable (debug mode by default) (default target)\n\
 	    help             Print this information\n\
 	    printvars        Print Makefile variables for debugging\n\
+	    clean            Clean all build artifacts not including 3rd Party\n\
+	    clean_external   Clean all 3rd party artifacts (can be re-built)\n\
 	\n\
 	Options:\n\
 	    RELEASE_MODE=<option>    Run target using following configuration. DEBUG is default behavior\n\

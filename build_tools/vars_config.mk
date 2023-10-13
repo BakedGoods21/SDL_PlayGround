@@ -54,3 +54,4 @@ LIB_INCLUDES := -I$(SDL_INCLUDE_PATH) \
 # SRC_OBJS_TEST = $(shell find $(shell ls -d $(DST_DIR)/*/*) -name '*.obj')
 # TEST_TARGETS := $(TEST_SRC_FILES:$(TEST_SRC_DIR)/%.cpp=$(TEST_BUILD_DIR)/%.test)
 # TEST_INCLUDE_PATHS := /I$(TEST_SRC_DIR) /I$(SRC_DIR) /I$(LIB_PATH)/boost_1_81_0
+

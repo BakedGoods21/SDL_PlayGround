@@ -37,7 +37,7 @@ LIB_PATH :=
 endif
 
 SDL_VERSION := SDL2-2.26.5
-SDL_PATH := $(LIB_PATH)/$(SDL_VERSION)/build-install
+SDL_PATH := $(LIB_PATH)/$(SDL_VERSION)/build_install
 SDL_INCLUDE_PATH := $(SDL_PATH)/include/SDL2
 
 GLM_VERSION := glm-0.9.9.8
